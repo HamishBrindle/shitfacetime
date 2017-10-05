@@ -4,6 +4,10 @@ $sfc-light-green: #B8F7D4;
 $sfc-light-blue: #6FE7DB;
 $sfc-light-purple: #7FA6EE;
 $sfc-dark-purple: #835AF1;
+$sfc-blue: #2E94B9;
+$sfc-light-yellow: #FFFDC1;
+$sfc-orange: #F0B775;
+$sfc-red: #D25565;
 
 // Body
 $body-bg: #f5f8fa;
@@ -21,6 +25,9 @@ $brand-info: #8eb4cb;
 $brand-success: #2ab27b;
 $brand-warning: #cbb956;
 $brand-danger: #bf5329;
+
+// Buttons
+$button-begin: $sfc-red;
 
 // Typography
 $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";

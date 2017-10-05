@@ -9,14 +9,13 @@
     <meta name="author" content="">
     <link rel="icon" href="http://v4-alpha.getbootstrap.com/favicon.ico">
 
-    <title>shitfacetime</title>
+    <title>shitfacetime | Pre-game Video Chat</title>
 
     <!-- Bootstrap core CSS -->
     <link href="http://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="http://v4-alpha.getbootstrap.com/examples/jumbotron/jumbotron.css" rel="stylesheet">
-    <link href="{!! asset('css/app.css') !!}" media="all" rel="stylesheet" type="text/css" />
+    <link href="http://v4-alpha.getbootstrap.com/examples/cover/cover.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="http://v4-alpha.getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
@@ -24,47 +23,53 @@
 
   <body>
 
-    <div class="container">
-        <!-- Image and text -->
-        <nav class="navbar navbar-toggleable-md navbar-light">
-          <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <a class="navbar-brand" href="#">
-            <img src="{{ asset('img/shitface.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
-            shitfacetime
-          </a>
-          <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-                @if (Route::has('login'))
-                    @auth
-                        <li class="nav-item active">
-                          <a class="nav-link" href="{{ url('/home') }}">Home <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="#">Account</a>
-                        </li>
-                    @else
-                        <li class="nav-item">
-                          <a class="nav-link" href="{{ route('login') }}">Login</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="{{ route('register') }}">Register</a>
-                        </li>
-                    @endauth
-                @endif
-            </ul>
-        </div>
-    </nav>
-</div>
+      <div class="container navigation">
+          <!-- Image and text -->
+          <nav class="navbar navbar-toggleable-md navbar-dark">
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+              <img src="{{ asset('img/shitface.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
+              shitfacetime
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+              <ul class="navbar-nav">
+                  @if (Route::has('login'))
+                      @auth
+                          <li class="nav-item active">
+                            <a class="nav-link" href="{{ url('/home') }}">Home <span class="sr-only">(current)</span></a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="#">Account</a>
+                          </li>
+                      @else
+                          <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">Login</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="{{ route('register') }}">Register</a>
+                          </li>
+                      @endauth
+                  @endif
+              </ul>
+          </div>
+      </nav>
+  </div>
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron sfc-purple-gradient">
-      <div class="container text-center">
-        <h1>it's shitfacetime</h1>
-        <p>let's get this pre-game going</p>
+    <div class="site-wrapper">
+      <div class="site-wrapper-inner">
+        <div class="cover-container">
+          <div class="inner cover">
+            <h1 class="cover-heading">Pre-Game Video Chat</h1>
+            <p class="lead">Get the party started by meeting some new friends for drinks!</p>
+            <p class="lead">
+              <a href="#" class="btn btn-lg btn-secondary">Continue</a>
+            </p>
+          </div>
+        </div>
       </div>
-    </div> <!-- End of jumbotron -->
+    </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
