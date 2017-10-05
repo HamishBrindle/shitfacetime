@@ -1,9 +1,46 @@
 
 // Fonts
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+@import url('https://fonts.googleapis.com/css?family=Indie+Flower');
 
 // Variables
 @import "variables";
 
-// Bootstrap
+/* Bootstrap
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
+*/
+
+/// Mixin printing a linear-gradient
+/// as well as a plain color fallback
+/// and the `-webkit-` prefixed declaration
+/// @access public
+/// @param {Keyword | Angle} $direction - Linear gradient direction
+/// @param {Arglist} $color-stops - List of color-stops composing the gradient
+@mixin linear-gradient($direction, $color-stops...) {
+    // Direction has been omitted and happens to be a color-stop
+    @if is-direction($direction) == false {
+      $color-stops: $direction, $color-stops;
+      $direction: 180deg;
+    }
+    background: nth(nth($color-stops, 1), 1);
+    background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
+    background: linear-gradient($direction, $color-stops);
+}
+
+body {
+    padding: 0px;
+}
+
+.jumbotron {
+    border-radius: 0px;
+}
+
+.sfc-dark-purple {
+    color: #fff;
+    background-color: $sfc-dark-purple;
+}
+
+.sfc-purple-gradient {
+    color: #fff;
+    background-image: linear-gradient(90deg, $sfc-dark-purple, $sfc-light-purple);
+}
