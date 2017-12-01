@@ -1,97 +1,98 @@
 
 // Fonts
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
-@import url('https://fonts.googleapis.com/css?family=Indie+Flower');
 
 // Variables
 @import "variables";
 
-// Functions -------------------------------------------------------------------
 
-/// Mixin printing a linear-gradient
-/// as well as a plain color fallback
-/// and the `-webkit-` prefixed declaration
-/// @access public
-/// @param {Keyword | Angle} $direction - Linear gradient direction
-/// @param {Arglist} $color-stops - List of color-stops composing the gradient
-@mixin linear-gradient($direction, $color-stops...) {
-    // Direction has been omitted and happens to be a color-stop
-    @if is-direction($direction) == false {
-      $color-stops: $direction, $color-stops;
-      $direction: 180deg;
-    }
-    background: nth(nth($color-stops, 1), 1);
-    background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
-    background: linear-gradient($direction, $color-stops);
+
+
+// Tutorial CSS ---------------------------------------------------------------
+
+#wrapper {
+  position: absolute;
+  width: 900px;
+  margin: 0 auto;
 }
 
-// Elements --------------------------------------------------------------------
-
-html [type=button] {
-    -webkit-appearance: none;
+h1 {
+  padding-left: 30px;
+  background-color: #E6E6E6;
 }
 
-html, body {
-    background-color: #FFF;
+#messenger-wrapper {
+  width: 400px;
+  float: left;
 }
 
-body {
-    padding: 0px;
-
+.hidden {
+  display: none;
 }
 
-// Navigation --------------------------------------------------------------
-
-.navigation {
-    background-color: #FFF;
+input[type=text] {
+  margin-bottom: 10px;
 }
 
-// Sections ---------------------------------------------------------------
-
-.jumbotron {
-    border-radius: 0px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%239C92AC' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M11 0l5 20H6l5-20zm42 31a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM0 72h40v4H0v-4zm0-8h31v4H0v-4zm20-16h20v4H20v-4zM0 56h40v4H0v-4zm63-25a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM53 41a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-30 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-28-8a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zM56 5a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zm-3 46a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM21 0l5 20H16l5-20zm43 64v-4h-4v4h-4v4h4v4h4v-4h4v-4h-4zM36 13h4v4h-4v-4zm4 4h4v4h-4v-4zm-4 4h4v4h-4v-4zm8-8h4v4h-4v-4z'/%3E%3C/g%3E%3C/svg%3E");
-    background-color: $sfc-dark-purple;
-    margin-bottom: 0px;
+.camera {
+  text-align: center;
 }
 
-// Buttons -----------------------------------------------------------------
-
-.btn-begin {
-    border-radius: 40px;
-    border-width: 3px;
-    text-transform: lowercase;
-    font-weight: 800;
-    border-color: #FFF;
-    color: #FFF;
-    width: 200px;
-    height: 50px;
+#connect {
+  background-color: #fff;
+  padding: 20px;
 }
 
-.btn-begin:hover {
-    border-color: #FFF;
-    color: $sfc-dark-purple;
-    background-color: #FFF;
+#message-container {
+  padding: 20px;
+  background-color: #ccc;
 }
 
-// Custom Colors --------------------------------------------------------------
-
-.sfc-red {
-    color: #fff;
-    background-color: $sfc-red;
+ul#messages {
+  margin: 0;
 }
 
-.sfc-dark-purple {
-    color: #fff;
-    background-color: $sfc-dark-purple;
+#message {
+  width: 330px;
 }
 
-.sfc-purple-gradient {
-    color: #fff;
-    background-image: linear-gradient(90deg, $sfc-dark-purple, $sfc-light-purple);
+span.from {
+  font-weight: bold;
 }
 
-.sfc-light-green {
-    color: #fff;
-    background-color: $sfc-light-green;
+ul#messages li {
+  list-style: none;
+  padding: 10px 0;
 }
+
+#messages-container {
+  background-color: #fff;
+}
+
+#my-camera {
+  float: left;
+  width: 200px;
+  height: 200px;
+}
+
+#peer-camera {
+  float: left;
+  width: 300px;
+  height: 350px;
+}
+
+@media screen and (max-width: 800px){
+  #wrapper {
+    width: 100%;
+  }
+
+  #wrapper > div {
+    width: 100%;
+  }
+
+  #peer-camera, #my-camera {
+    float: none;
+  }
+}
+
+// END Tutorial CSS ------------------------------------------------------------

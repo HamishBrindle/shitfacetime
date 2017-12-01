@@ -4,93 +4,73 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Laravel</title>
+        <title>ShitFaceTime</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-        <link href="{{ HTML::style('css/app.css'); }}" rel="stylesheet" type="text/css">
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Indie Flower', cursive;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
+        <!-- Client -side dependencies -->
+        <link rel="stylesheet" href="{{ asset('css/picnic.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/plugins.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <script src="{{ asset('js/jquery.min.js') }}"></script>
+        <script src="{{ asset('js/peer.min.js') }}"></script>
+        <script src="{{ asset('js/app.js') }}"></script>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    shitfaceTime
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
+      <div id="wrapper">
+        <!-- Display the video of the remote peer -->
+        <div id="peer-camera" class="camera">
+          <video width="300" height="300" autoplay></video>
         </div>
+
+        <div id="messenger-wrapper">
+          <div class="container">
+            <h1>Peer Messenger</h1>
+
+            <!--
+              Display the login form and messaging form.
+              This allows the user to send messages to their peer and make a video call.
+            -->
+            <div id="connect">
+              <h4>ID: <span id="id"></span></h4>
+              <input type="text" name="name" id="name" placeholder="Name">
+              <input type="text" name="peer_id" id="peer_id" placeholder="Peer ID">
+              <div id="connected_peer_container" class="hidden">
+                Connected Peer:
+                <span id="connected_peer"></span>
+              </div>
+              <button id="login">Login</button>
+            </div>
+
+            <div id="chat" class="hidden">
+              <div id="messages-container">
+                <ul id="messages"></ul>
+              </div>
+              <div id="message-container">
+                <input type="text" name="message" id="message" placeholder="Type message..">
+                <button id="send-message">Send Message</button>
+                <button id="call">Call</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Display video of the current user -->
+        <div id="my-camera" class="camera">
+          <video width="200" height="200" autoplay></video>
+        </div>
+      </div>
+
+      <!-- Handlebars template for constructing the list of messages -->
+      {{-- <script id="messages-template" type="text/x-handlebars-template">
+        {{#each messages}}
+        <li>
+          <span class="from">{{from}}:</span> {{text}}
+        </li>
+        {{/each}}
+      </script> --}}
     </body>
 </html>

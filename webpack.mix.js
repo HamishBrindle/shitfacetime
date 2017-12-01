@@ -11,9 +11,9 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js([
-        'node_modules/jquery/dist/jquery.min.js',
-        'node_modules/bootstrap/dist/js/bootstrap.js',
-        'resources/assets/js/app.js'
-    ], 'public/js/app.js')
-    .sass('resources/assets/sass/app.scss', 'public/css/app.css');
+mix.js('resources/assets/js/app.js', 'public/js')
+    .copy('node_modules/picnic/releases/picnic.min.css', 'public/css')
+    .copy('node_modules/picnic/releases/plugins.min.css', 'public/css')
+    .copy('node_modules/jquery/dist/jquery.min.js', 'public/js')
+    .copy('node_modules/peerjs/dist/peer.min.js', 'public/js')
+    .sass('resources/assets/sass/app.scss', 'public/css');

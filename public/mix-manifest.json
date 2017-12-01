@@ -1,4 +1,8 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/css/picnic.min.css": "/css/picnic.min.css",
+    "/css/plugins.min.css": "/css/plugins.min.css",
+    "/js/jquery.min.js": "/js/jquery.min.js",
+    "/js/peer.min.js": "/js/peer.min.js"
 }
