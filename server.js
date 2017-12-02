@@ -23,8 +23,12 @@ var options = {
     rejectUnauthorized: false
 };
 
+// set the port of our application
+// process.env.PORT lets the port be set by Heroku
+var port = process.env.PORT || 4444;
+
 // Connect to server option.
-var server = https.createServer(options, app).listen(4444, function() {
+var server = https.createServer(options, app).listen(port, function() {
     console.log('Connected To Server.');
 });
 
