@@ -13,13 +13,8 @@
 
         // Web Socket Implementation.
         var socket = io();
-        var el = document.getElementById('server-time');
         var room = '';
         var peeridLocal = '';
-
-        socket.on('time', function(timeString) {
-          el.innerHTML = 'Server time: ' + timeString;
-        });
 
         // PeerJS object
         var peer = new Peer({key: '6telfwnyvqwd0a4i'});
