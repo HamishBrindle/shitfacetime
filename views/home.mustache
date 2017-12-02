@@ -12,12 +12,12 @@
         <script type="text/javascript">
 
         // Web Socket Implementation.
-        var socket = io('https://shit-facetime.herokuapp.com/');
+        var socket = io();
         var room = '';
         var peeridLocal = '';
 
         // PeerJS object
-        var peer = new Peer({　host:'shitface-time.herokuapp.com', secure:true, port:443, key: 'peerjs', debug: 3});
+        var peer = new Peer({key: '6telfwnyvqwd0a4i'});
         peer.on('open', function() {
             $('#my-id').text(peer.id);
             console.log(peer.id);
