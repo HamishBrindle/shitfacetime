@@ -3,37 +3,19 @@ const mustacheExpress = require('mustache-express');
 const bodyParser = require('body-parser');
 const ExpressPeerServer = require('peer').ExpressPeerServer;
 const path = require('path')
-const http = require('http');
-const https = require('https');
 const fs = require('fs');
-
-// Certificate keys
-var privateKey  = fs.readFileSync('server.key', 'utf8');
-var certificate = fs.readFileSync('server.crt', 'utf8');
-var credentials = {key: privateKey, cert: certificate};
 
 // Create express app instance.
 const app = express();
 
-// Setup certificate options.
-var options = {
-    key: fs.readFileSync('server.key'),
-    cert: fs.readFileSync('server.crt'),
-    requestCert: false,
-    rejectUnauthorized: false
-};
-
-// set the port of our application
-// process.env.PORT lets the port be set by Heroku
-var port = process.env.PORT || 4444;
-
-// Connect to server option.
-var server = https.createServer(options, app).listen(port, function() {
-    console.log('Node app is running on port ' + port);
-});
+// Http server from app
+var server = require('http').Server(app);
 
 // Create new socket instance using the https server.
 var io = require('socket.io')(server);
+
+// Set the app's port to whoever is running it (or 5000)
+app.set('port', (process.env.PORT || 5001));
 
 // Prepare Variables For Video Chat.
 var queue = [];    // list of sockets waiting for peers
@@ -107,7 +89,9 @@ app.use(express.static(__dirname + '/node_modules'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Handle All Routes
-app.get('/', function(req, res) {
-    res.render('home');
+//For avoidong Heroku $PORT error
+app.get('/', function(request, response) {
+    response.render('home');
+}).listen(app.get('port'), function() {
+    console.log('App is running, server is listening on port ', app.get('port'));
 });
