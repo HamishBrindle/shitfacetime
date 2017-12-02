@@ -9,13 +9,17 @@ const fs = require('fs');
 const app = express();
 
 // Http server from app
-var server = require('http').Server(app);
+var server = require( "http" ).createServer( app );
 
 // Create new socket instance using the https server.
 var io = require('socket.io')(server);
 
 // Set the app's port to whoever is running it (or 5000)
 app.set('port', (process.env.PORT || 5001));
+
+server.listen(app.get('port'), function() {
+    console.log('App is running, server is listening on port ', app.get('port'));
+});
 
 // Prepare Variables For Video Chat.
 var queue = [];    // list of sockets waiting for peers
@@ -92,6 +96,4 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //For avoidong Heroku $PORT error
 app.get('/', function(request, response) {
     response.render('home');
-}).listen(app.get('port'), function() {
-    console.log('App is running, server is listening on port ', app.get('port'));
 });
