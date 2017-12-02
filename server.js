@@ -8,7 +8,7 @@ const socketIO = require('socket.io');
 
 const PORT = process.env.PORT || 3000;
 
-const app = expres();
+const app = express();
 
 const server = app.use((req, res) => res.sendFile(INDEX)).listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
