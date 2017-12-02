@@ -8,8 +8,10 @@ const fs = require('fs');
 // Create express app instance.
 const app = express();
 
+app.enable('trust proxy');
+
 // Http server from app
-var server = require( "http" ).createServer( app );
+var server = require( "https" ).createServer( app );
 
 // Create new socket instance using the https server.
 var io = require('socket.io')(server);
