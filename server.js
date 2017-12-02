@@ -3,8 +3,6 @@ const mustacheExpress = require('mustache-express');
 const bodyParser = require('body-parser');
 const ExpressPeerServer = require('peer').ExpressPeerServer;
 const path = require('path')
-const http = require('http');
-const https = require('https');
 const fs = require('fs');
 const socketIO = require('socket.io');
 
