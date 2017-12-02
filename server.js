@@ -3,16 +3,32 @@ const mustacheExpress = require('mustache-express');
 const bodyParser = require('body-parser');
 const ExpressPeerServer = require('peer').ExpressPeerServer;
 const path = require('path')
+const http = require('http');
+const https = require('https');
 const fs = require('fs');
 const socketIO = require('socket.io');
 
 const PORT = process.env.PORT || 3000;
 
+// Certificate keys
+var privateKey  = fs.readFileSync('server.key', 'utf8');
+var certificate = fs.readFileSync('server.crt', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
+
 const app = express();
 
-const server = app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
+// Setup certificate options.
+var options = {
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.crt'),
+    requestCert: false,
+    rejectUnauthorized: false
+};
 
-const io = socketIO(server);
+const server = https.createServer(options, app).listen(PORT, () => console.log(`Listening on ${ PORT }`));
+
+// Create new socket instance using the https server.
+var io = require('socket.io')(server);
 
 // Prepare Variables For Video Chat.
 var queue = [];    // list of sockets waiting for peers
