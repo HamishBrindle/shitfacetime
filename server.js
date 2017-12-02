@@ -10,8 +10,14 @@ const app = express();
 
 app.enable('trust proxy');
 
+// Setup certificate options.
+var options = {
+    requestCert: false,
+    rejectUnauthorized: false
+};
+
 // Http server from app
-var server = require( "https" ).createServer( app );
+var server = require( "https" ).createServer( options, app );
 
 // Create new socket instance using the https server.
 var io = require('socket.io')(server);
