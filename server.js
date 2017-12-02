@@ -14,11 +14,6 @@ const server = app.use((req, res) => res.sendFile(INDEX)).listen(PORT, () => con
 
 const io = socketIO(server);
 
-io.on('connection', (socket) => {
-  console.log('Client connected');
-  socket.on('disconnect', () => console.log('Client disconnected'));
-});
-
 // Prepare Variables For Video Chat.
 var queue = [];    // list of sockets waiting for peers
 var rooms = {};    // map socket.id => room
