@@ -4,29 +4,19 @@ const bodyParser = require('body-parser');
 const ExpressPeerServer = require('peer').ExpressPeerServer;
 const path = require('path')
 const fs = require('fs');
+const socketIO = require('socket.io');
 
-// Create express app instance.
-const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.enable('trust proxy');
+const app = expres();
 
-// Setup certificate options.
-var options = {
-    requestCert: false,
-    rejectUnauthorized: false
-};
+const server = app.use((req, res) => res.sendFile(INDEX)).listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
-// Http server from app
-var server = require( "https" ).createServer( options, app );
+const io = socketIO(server);
 
-// Create new socket instance using the https server.
-var io = require('socket.io')(server);
-
-// Set the app's port to whoever is running it (or 5000)
-app.set('port', (process.env.PORT || 5001));
-
-server.listen(app.get('port'), function() {
-    console.log('App is running, server is listening on port ', app.get('port'));
+io.on('connection', (socket) => {
+  console.log('Client connected');
+  socket.on('disconnect', () => console.log('Client disconnected'));
 });
 
 // Prepare Variables For Video Chat.

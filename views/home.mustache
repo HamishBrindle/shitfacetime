@@ -12,9 +12,14 @@
         <script type="text/javascript">
 
         // Web Socket Implementation.
-        var socket = io.connect();
+        var socket = io();
+        var el = document.getElementById('server-time');
         var room = '';
         var peeridLocal = '';
+
+        socket.on('time', function(timeString) {
+          el.innerHTML = 'Server time: ' + timeString;
+        });
 
         // PeerJS object
         var peer = new Peer({key: '6telfwnyvqwd0a4i'});
@@ -116,6 +121,8 @@
         </script>
     </head>
     <body>
+
+        <p id='server-time'></p>
 
         <div class="pure-g">
 
