@@ -17,7 +17,7 @@
         var peeridLocal = '';
 
         // PeerJS object
-        var peer = new Peer({　host:'sft-peer.herokuapp.com', secure:true, port:9000, path: '/', debug: 3});
+        var peer = new Peer({　host:'sft-peer.herokuapp.com', secure:true, port:9000, debug: 3});
         peer.on('open', function() {
             $('#my-id').text(peer.id);
             console.log(peer.id);
