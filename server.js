@@ -29,7 +29,7 @@ var port = process.env.PORT || 4444;
 
 // Connect to server option.
 var server = https.createServer(options, app).listen(port, function() {
-    console.log('Connected To Server.');
+    console.log('Node app is running on port ' + port);
 });
 
 // Create new socket instance using the https server.
