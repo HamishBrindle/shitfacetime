@@ -6,12 +6,16 @@ const path = require('path')
 const fs = require('fs');
 const socketIO = require('socket.io');
 
+// Get port decided by server or default
 const PORT = process.env.PORT || 3000;
 
+// Get our express object
 const app = express();
 
+// Get connection to our port
 const server = app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
+// Get our Socket.io connection
 const io = socketIO(server);
 
 // Prepare Variables For Video Chat.
