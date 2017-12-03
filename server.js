@@ -16,7 +16,7 @@ const app = express();
 const server = app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 // Open up our peer server
-app.use('/peerjs', ExpressPeerServer(server, options));
+app.use('/', ExpressPeerServer(server, options));
 
 // Get our Socket.io connection
 const io = socketIO(server);
