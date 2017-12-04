@@ -66,13 +66,23 @@ var rooms = {}; // map socket.id => room
 var peerids = {}; // map socket.id => name
 var allUsers = {}; // map socket.id => socket
 
+// Add connected users.
+var connectedUsers = new Set();
+
 // Find a peer to connect with for video chat.
 var findPeerForLoneSocket = function(you) {
-    // this is place for possibly some extensive logic
-    // which can involve preventing two people pairing multiple times
     if (queue.length > 0) {
+
         // Somebody is in queue, pair them!
         var them = queue.pop();
+
+        // User from the queue is not an active user.
+        if (connectedUsers.has(them.id) == false) {
+            findPeerForLoneSocket(you);
+            return;
+        }
+
+        // Create room name for new call.
         var room = you.id + '#' + them.id;
 
         // Join them both
@@ -100,11 +110,10 @@ var findPeerForLoneSocket = function(you) {
 
 // On connection for socket.
 io.on('connection', function(socket) {
-
-    // User is connected
     console.log('User Connected');
+    connectedUsers.add(socket.id);
 
-    // Wait for initial peer connection for video (other user to join).
+    // Wait for initial peer connection for video.
     socket.on('peerid', function(id) {
         console.log("Peerid: " + id);
         peerids[socket.id] = id;
@@ -114,6 +123,37 @@ io.on('connection', function(socket) {
 
     // When a socket disconnects.
     socket.on('disconnect', function() {
+        // Display user disconnected, and remove socket from active user.
         console.log('User Disconnected.');
+
+        // Deletes user from the connected users.
+        connectedUsers.delete(socket.id);
+
+        // Grab room.
+        var room = String(rooms[socket.id]);
+
+        // If user was in a room (Call)
+        if (room != null) {
+            socket.leave(room); // Remove current disconnected user.
+            rooms[socket.id] = null; // Deletes the room from the user.
+
+            // End their call.
+            socket.broadcast.to(room).emit('call end');
+        }
+    });
+
+    /**
+     * When the call has dropped due to one user disconnecting.
+     *
+     * @return void
+     */
+    socket.on('call dropped', function() {
+        // Make them leave the room.
+        var room = String(rooms[socket.id]);
+        socket.leave(room); // Remove current disconnected user.
+        rooms[socket.id] = null; // Deletes the room from the user.
+
+        // Find a peer for the other user.
+        findPeerForLoneSocket(allUsers[socket.id]);
     });
 });
