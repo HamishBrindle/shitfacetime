@@ -8,4 +8,11 @@
   padding: 30px;
   border-radius: 4px; }
 
+.banner-content h1 {
+  color: #FFF;
+  text-shadow: 4px 4px #f58e9a; }
+
+.banner-content img {
+  width: 12em; }
+
 /*# sourceMappingURL=style.css.map*/
