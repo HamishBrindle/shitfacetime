@@ -47,6 +47,7 @@ const peerjs = new Peer(peerSettings);
 * @return void
 */
 peerjs.on('open', function() {
+    makePeerHeartbeater(peerjs); // Start heartbeat connection.
     consoleMessage('Peerjs Connected'); // Connected message.
     peerjsConnectedUI(); // Display peerjs connected.
     peerConnected = true; // Connection has been made.
@@ -80,8 +81,10 @@ peerjs.on('disconnected', function() {
     // Attempt to reconnect if peerjs isn't destroyed.
     if (peerjs.destroyed == false) {
         peerjs.reconnect();
-        console.log(peerjs.id);
     }
+
+    // Stop the heart beat.
+    heartbeater.stop();
 });
 
 /**
@@ -296,6 +299,37 @@ function hangupCall() {
     if (window.existingCall) {
         window.existingCall.close();
     }
+}
+
+/**
+ * Make a peer heart beat connection to keep
+ * the server alive when connected to our
+ * heroku applications.
+ *
+ * @param peer - Current peer object.
+ * @return void
+ */
+function makePeerHeartbeater(peer) {
+    console.log('Heartbeat Started.');
+    var timeoutId = 0;
+    function heartbeat () {
+        timeoutId = setTimeout( heartbeat, 20000 );
+        if ( peer.socket._wsOpen() ) {
+            peer.socket.send( {type:'HEARTBEAT'} );
+        }
+    }
+    // Start
+    heartbeat();
+    // return
+    return {
+        start : function () {
+            if ( timeoutId === 0 ) { heartbeat(); }
+        },
+        stop : function () {
+            clearTimeout( timeoutId );
+            timeoutId = 0;
+        }
+    };
 }
 
 // Click handlers setup

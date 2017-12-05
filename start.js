@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const socketIO = require('socket.io');
 const http = require('http');
 const https = require('https');
 const fs = require('fs');
@@ -58,7 +57,9 @@ if (environment === 'production') {
 }
 
 // Get our Socket.io connection
-const io = socketIO(server);
+var io = require('socket.io')(server);
+io.set('heartbeat timeout', 4000);
+io.set('heartbeat interval', 2000);
 
 // Prepare Variables For Video Chat.
 var queue = []; // list of sockets waiting for peers
