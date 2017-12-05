@@ -165,31 +165,6 @@ function startCall(peerid) {
              onCallEnded();
          });
 
-         // If there was an error with the call.
-         call.on('error', function(err) {
-
-             // Call failed callback.
-             onCallFailedRetry();
-
-             // Display error message.
-             console.log('Error connecting call, retry.');
-
-             // If the call is working, but not displaying anything close.
-             if (call.open) {
-                 call.close();
-             }
-
-             // Leave the room again.
-             room = '';
-
-             // Setup the UI.
-             callConnectedUI(false, 'Call Failed.');
-             $('#their-id').text('Not in call.');
-
-             // Emit to start a new call.
-             socket.emit('new call');
-         });
-
          // COMBAK: Remove/refractor this!
          // UI stuff
          window.existingCall = call;
