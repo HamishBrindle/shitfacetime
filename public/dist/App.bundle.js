@@ -237,10 +237,12 @@ function callConnectedUI(status, message) {
         to = 'dark';
         from = 'success';
         $(".beer-loader").show();
-        $("#their-video").hide();
+        $(".their-video").hide();
     } else {
         $(".beer-loader").fadeOut("slow");
-        $("#their-video").fadeIn("slow");
+        $(".their-video").fadeIn("slow");
+        $(".their-video").css("width", "100%");
+        $(".their-video").css("height", "auto");
     }
     // UI: Peerjs connection status.
     $('#call-connected').addClass('badge-' + to).removeClass('badge-' + from);
