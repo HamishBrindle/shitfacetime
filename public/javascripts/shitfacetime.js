@@ -180,6 +180,25 @@ peerjs.on('error', function(err) {
     // Display Call In Progress
     callConnectedUI(false, 'Calling Failed.');
 
+    // Check if the error was peer not connected.
+    if (err = 'peer-unavailable' && peerjs.disconnected) {
+
+        // Reconnect to the server.
+        peerjs.reconnect();
+
+        // End any calls.
+        hangupCall();
+
+        // Leave the room again.
+        room = '';
+
+        // Setup the UI.
+        callConnectedUI(false, 'Call Failed.');
+        $('#their-id').text('Not in call.');
+
+        // Emit to start a new call.
+        socket.emit('new call');
+    }
     // Display errors.
     console.log(err.message);
 
@@ -216,7 +235,6 @@ socket.on('call start', function(data) {
     // Ensure only one person starts the call.
     if (data.caller == 'this')
     {
-        console.log("Callllling");
         startCall(data.peer);
     }
 });
