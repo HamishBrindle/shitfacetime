@@ -66,8 +66,14 @@ peerjs.on('open', function() {
 function startCall(peerid) {
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     navigator.getUserMedia({video: true, audio: true}, function(stream) {
+        // Display console message.
+        consoleMessage('startCall()');
 
-        console.log("Starting new call.");
+        // Call loading callback.
+        onCallLoading();
+
+        // Call Connecting Message.
+        callConnectedUI(true, "Call Connecting");
 
         // Hangup previous call.
         hangupCall();
@@ -83,6 +89,31 @@ function startCall(peerid) {
         // When call has stopped.
         call.on('close', function() {
             onCallEnded();
+        });
+
+        // If there was an error with the call.
+        call.on('error', function(err) {
+
+            // Call failed callback.
+            onCallFailedRetry();
+
+            // Display error message.
+            console.log('Error connecting call, retry.');
+
+            // If the call is working, but not displaying anything close.
+            if (call.open) {
+                call.close();
+            }
+
+            // Leave the room again.
+            room = '';
+
+            // Setup the UI.
+            callConnectedUI(false, 'Call Failed.');
+            $('#their-id').text('Not in call.');
+
+            // Emit to start a new call.
+            socket.emit('new call');
         });
 
         // COMBAK: Dev UI stuff
@@ -106,8 +137,15 @@ function startCall(peerid) {
  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
  peerjs.on('call', function(call) {
      navigator.getUserMedia({video: true, audio: true}, function(stream) {
-         // Display Call In Progress
-         callConnectedUI(true, "Loading Video..");
+
+         // Display console message.
+         consoleMessage('startCall()');
+
+         // Call loading callback.
+         onCallLoading();
+
+         // Call Connecting Message.
+         callConnectedUI(true, "Call Connecting");
 
          // Hangup previous call.
          hangupCall();
@@ -127,6 +165,9 @@ function startCall(peerid) {
 
          // If there was an error with the call.
          call.on('error', function(err) {
+
+             // Call failed callback.
+             onCallFailedRetry();
 
              // Display error message.
              console.log('Error connecting call, retry.');
@@ -168,6 +209,7 @@ function startCall(peerid) {
 peerjs.on('disconnected', function() {
     // Reconnect user.
     peerjs.reconnect();
+    onCallFailedRetry();
 
     // Dislay disconnected
     console.log("Disconnected");
@@ -182,6 +224,7 @@ peerjs.on('disconnected', function() {
 peerjs.on('error', function(err) {
     // Reconnect user.
     peerjs.reconnect();
+    onCallFailedRetry();
 
     // Display Call In Progress
     callConnectedUI(false, 'Calling Failed.');
@@ -252,12 +295,18 @@ socket.on('partner disconnected', function(data) {
     // End any calls.
     hangupCall();
 
+    // Party disconnected callback.
+    onPartyDisconnected();
+
     // Setup the UI.
     callConnectedUI(false, 'Not in call.');
     $('#their-id').text('Not in call.');
 
     // Emitted to remove server side info, and find new peer.
     socket.emit('partner disconnected');
+
+    // Finding new party callback.
+    onFindingParty();
 });
 
 /**
@@ -339,8 +388,9 @@ function findPartyToCall() {
 
     // Ensure services are connected.
     if (socketConnected && peerConnected) {
-        // Send peerid and find call partner.
-        socket.emit('peerid', peerjs.id);
+        onClientReady();
+        socket.emit('peerid', peerjs.id); // Send peerid and find call partner.
+        onFindingParty();
     }
 }
 
