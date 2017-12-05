@@ -136,9 +136,10 @@ io.on('connection', function(socket) {
         if (room != null) {
             socket.leave(room); // Remove current disconnected user.
             rooms[socket.id] = null; // Deletes the room from the user.
+            peerids[socket.id] = null; // Remove PeerJS ID From List.
 
-            // End their call.
-            socket.broadcast.to(room).emit('call end');
+            // End active users call, and find them a new partner.
+            socket.broadcast.to(room).emit('partner disconnected');
         }
     });
 
@@ -147,7 +148,7 @@ io.on('connection', function(socket) {
      *
      * @return void
      */
-    socket.on('call dropped', function() {
+    socket.on('partner disconnected', function() {
         // Make them leave the room.
         var room = String(rooms[socket.id]);
         socket.leave(room); // Remove current disconnected user.
