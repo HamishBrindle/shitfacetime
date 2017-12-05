@@ -54,37 +54,59 @@ peerjs.on('open', function() {
 });
 
 /**
-* PeerJS: Recieving a call.
+* PeerJS: When a user is recieving a call.
 *
 * @param call - Recieving call.
 * @return void
 */
 peerjs.on('call', function(call) {
-    call.answer(window.localStream); // Answer call.
+
+    // End any current calls.
+    hangupCall();
+
+    // Answer the call.
+    call.answer(window.localStream);
+
+    //
     makeCall(call);
 });
 
 /**
-* PeerJS: Display any errors within the call.
+* Emitted when the peer is disconnected from the signalling server.
 *
-* @param err - Errors with call.
 * @return void
 */
-peerjs.on('error', function(err) {
-    callConnectedUI(false, 'Not In Call'); // Display Call In Progress
-    console.log(err.message) // Display errors.
-    if (peerjs.disconnected) {
-        peerjs.disconnect();
+peerjs.on('disconnected', function() {
+    // Attempt to reconnect if peerjs isn't destroyed.
+    if (peerjs.destroyed == false) {
         peerjs.reconnect();
+        console.log(peerjs.id);
     }
 });
 
 /**
-* Socket.IO: On Connection.
-*
-* @param  socket - Clients Socket Object.
-* @return void
-*/
+ * PeerJS: Display any errors within the call.
+ *
+ * @param err - Errors with call.
+ * @return void
+ */
+peerjs.on('error', function(err) {
+    // Display Call In Progress
+    callConnectedUI(false, 'Calling Failed.');
+
+    // Display errors.
+    console.log(err.message);
+
+    // Destroy peer now that it is useless.
+    peerjs.destroy();
+});
+
+/**
+ * Socket.IO: On Connection.
+ *
+ * @param  socket - Clients Socket Object.
+ * @return void
+ */
 socket.on('connect', function (socket) {
     consoleMessage('Socket Connected'); // Connected message.
     socketConnectedUI(); // UI display for connected.
@@ -102,8 +124,12 @@ socket.on('call start', function(data) {
     room = data.room;
 
     // For testing, print all collected data.
+    console.log("Starting New Video Call.");
     console.log("Room: " + data.room);
     console.log("Peer ID: " + data.peer);
+
+    // End any calls.
+    hangupCall();
 
     // Ensure only one person starts the call.
     if (data.caller == 'this')
@@ -115,17 +141,23 @@ socket.on('call start', function(data) {
 });
 
 /**
-* Socket.IO: Call has ended.
+* Socket.IO: Emitted when a
 *
 * @return void
 */
-socket.on('call end', function(data) {
+socket.on('partner disconnected', function(data) {
+    // Reset the room name.
     room = '';
-    if (window.existingCall) {
-        window.existingCall.close(); // Kill the current call.
-    }
-    callConnectedUI(false, 'Not in call.'); // Display Call In Progress
-    $('#their-id').text('Not in call.'); // Dev purposes display status.
+
+    // End any calls.
+    hangupCall();
+
+    // Setup the UI.
+    callConnectedUI(false, 'Not in call.');
+    $('#their-id').text('Not in call.');
+
+    // Emitted to remove server side info, and find new peer.
+    socket.emit('partner disconnected');
 });
 
 /**
@@ -202,9 +234,7 @@ function findPeer() {
     callConnectedUI(false, 'Finding Call.');
 
     // Hang up on an existing call if present
-    if (window.existingCall) {
-        window.existingCall.close();
-    }
+    hangupCall();
 
     // Ensure services are connected.
     if (socketConnected && peerConnected) {
@@ -236,14 +266,12 @@ function setupCall() {
 * @return void
 */
 function makeCall(call) {
+    // Display loading call.
+    callConnectedUI(true, "Loading call..");
 
-    // Hang up on an existing call if present
-    if (window.existingCall) {
-        window.existingCall.close();
-    }
-
-    // Wait for stream on the call, then set peer video display
+    // Wait for stream on the call.
     call.on('stream', function(stream) {
+        // Set Peer Video Display
         $('#their-video').prop('src', URL.createObjectURL(stream));
     });
 
@@ -254,15 +282,20 @@ function makeCall(call) {
     // Display Call In Progress
     callConnectedUI(true, "In Call");
 
-    // Call Ended
-    call.on('close', function() {
-        console.log("Call Ended");
+    // 1. 'call.peer' gets the other users PeerJS ID.
+    // 2. 'call.open' gets whether the call was successful.
+}
 
-        // Hang up on an existing call if present
-        if (window.existingCall) {
-            window.existingCall.close();
-        }
-    });
+/**
+ * Hangup the call if it exists.
+ *
+ * @return void
+ */
+function hangupCall() {
+    // Hang up on an existing call if present
+    if (window.existingCall) {
+        window.existingCall.close();
+    }
 }
 
 // Click handlers setup
