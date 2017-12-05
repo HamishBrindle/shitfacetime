@@ -240,10 +240,11 @@ peerjs.on('call', function (call) {
  * @return void
  */
 peerjs.on('disconnected', function () {
-    // Attempt to reconnect if peerjs isn't destroyed.
-    if (peerjs.destroyed == false) {
-        peerjs.reconnect();
-    }
+    // Reconnect user.
+    peerjs.reconnect();
+
+    // Dislay disconnected
+    console.log("Disconnected");
 });
 
 /**
@@ -253,14 +254,14 @@ peerjs.on('disconnected', function () {
  * @return void
  */
 peerjs.on('error', function (err) {
+    // Reconnect user.
+    peerjs.reconnect();
+
     // Display Call In Progress
     callConnectedUI(false, 'Calling Failed.');
 
     // Check if the error was peer not connected.
     if (err = 'peer-unavailable' && peerjs.disconnected) {
-
-        // Reconnect to the server.
-        peerjs.reconnect();
 
         // End any calls.
         hangupCall();
@@ -275,11 +276,9 @@ peerjs.on('error', function (err) {
         // Emit to start a new call.
         socket.emit('new call');
     }
+
     // Display errors.
     console.log(err.message);
-
-    // Destroy peer now that it is useless.
-    peerjs.destroy();
 });
 
 /**
