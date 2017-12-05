@@ -159,7 +159,8 @@ function startCall(peerid) {
 
         // Wait for stream on the call.
         call.on('stream', function (remoteStream) {
-            onCallConnected(remoteStream);
+            onCallConnected();
+            $('#their-video').prop('src', URL.createObjectURL(remoteStream)); // Display other partys video stream.
         });
 
         // When call has stopped.
@@ -231,7 +232,8 @@ peerjs.on('call', function (call) {
 
         // Wait for stream on the call.
         call.on('stream', function (remoteStream) {
-            onCallConnected(remoteStream);
+            onCallConnected();
+            $('#their-video').prop('src', URL.createObjectURL(remoteStream)); // Display other partys video stream.
         });
 
         // When call has stopped.
@@ -472,14 +474,16 @@ function findPartyToCall() {
 }
 
 /**
-* Setup call information.
-*
-* @return void
-*/
+ * Setup call information.
+ *
+ * @return void
+ */
 function setupCall() {
     // Get audio/video stream
     navigator.getUserMedia({ audio: true, video: true }, function (stream) {
-        onClientLoadVideoSuccess(stream);
+        $('#my-video').prop('src', URL.createObjectURL(stream)); // Set your video displays
+        window.localStream = stream; // Save stream in global.
+        $('#enable-camera-alert').hide(); // Hide camera alert.
     }, function (err) {
         console.log('Failed to get local stream', err);
     });
@@ -576,10 +580,9 @@ function onCallLoading() {}
  * @param remoteStream - Stream from the other party, display this.
  * @return void
  */
-function onCallConnected(remoteStream) {
-    partyVideoStreamURL = URL.createObjectURL(remoteStream); // Save remote stream URL.
-    $('#their-video').prop('src', partyVideoStreamURL); // Display other partys video stream.
-}
+function onCallConnected() {}
+//
+
 
 /**
  * Call connection failed when loading. Each client
@@ -611,7 +614,6 @@ function onPartyDisconnected() {}
  */
 function onCallEnded() {
     $('#their-video').prop('src', ''); // Remove other partys video connection.
-    window.URL.revokeObjectURL(partyVideoStreamURL); // Free up remote video stream URL.
 }
 
 /**
@@ -622,12 +624,9 @@ function onCallEnded() {
  * @param stream - Clients local stream.
  * @return void
  */
-function onClientLoadVideoSuccess(clientStream) {
-    clientVideoStreamURL = URL.createObjectURL(clientStream); // Save local client video stream URL.
-    $('#my-video').prop('src', clientVideoStreamURL); // Set your video displays
-    window.localStream = clientStream; // Save stream in global.
-    $('#enable-camera-alert').hide(); // Hide camera alert.
-}
+function onClientLoadVideoSuccess() {}
+//
+
 
 /**
  * When the current clients video failed to load.
