@@ -56,7 +56,7 @@ if (environment === 'production') {
     });
 }
 
-// Get our Socket.io connection
+// Get our Socket.io connection, and start the heartbeat.
 var io = require('socket.io')(server);
 io.set('heartbeat timeout', 4000);
 io.set('heartbeat interval', 2000);
@@ -119,6 +119,22 @@ io.on('connection', function(socket) {
         console.log("Peerid: " + id);
         peerids[socket.id] = id;
         allUsers[socket.id] = socket;
+        findPeerForLoneSocket(socket); // Check if is in queue.
+    });
+
+    // Emitted when a user needs a new call.
+    socket.on('new call', function() {
+
+        // Grab room.
+        var room = String(rooms[socket.id]);
+
+        // Leave the room.
+        socket.leave(room);
+
+        // Reset the rooms array.
+        rooms[socket.id] = null; // Deletes the room from the user.
+
+        // Find a new call to match with.
         findPeerForLoneSocket(socket); // Check if is in queue.
     });
 
