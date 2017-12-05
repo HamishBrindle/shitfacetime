@@ -4,7 +4,7 @@
 /* Mobile Layout: 320px */
 /* Wide Mobile Layout: 480px */
 /* =================================== */
-/*  Basic Style 
+/*  Basic Style
 /* =================================== */
 ::-webkit-input-placeholder {
   /* WebKit, Blink, Edge */
@@ -78,6 +78,13 @@ a, a:focus, a:hover {
   text-decoration: none;
   outline: 0;
   color: #777777;
+}
+
+#their-video, #my-video, .beer-loader {
+  width :100%;
+  height: 100%;
+  display: block;
+
 }
 
 .btn.active.focus,

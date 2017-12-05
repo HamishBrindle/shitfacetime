@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Shitfacetime</title>
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+        <!-- Our CSS -->
+        <link href="https://fonts.googleapis.com/css?family=Poppins:300,500,600,900" rel="stylesheet">
+      		<!--
+      		CSS
+      		============================================= -->
+      		<link rel="stylesheet" href="dist/theme/css/linearicons.css">
+      		<link rel="stylesheet" href="dist/theme/css/font-awesome.min.css">
+      		<link rel="stylesheet" href="dist/theme/css/nice-select.css">
+      		<link rel="stylesheet" href="dist/theme/css/magnific-popup.css">
+      		<link rel="stylesheet" href="dist/theme/css/bootstrap.css">
+      		<link rel="stylesheet" href="dist/theme/css/main.css">
+      	</head>
+
+        <!-- Load page-specific scripts -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/0.3.14/peer.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+        <!-- Our client-side application -->
+        <!-- TODO: require jQuery, Socket.io, and Peerjs from within this file -->
+        <script type="text/javascript" src="dist/App.bundle.js"></script>
+
+    </head>
+    <body>
+
+      <!-- Main App Section -->
+      <div id="app">
+          <div class="container">
+              <!-- Errors/Status -->
+              <div class="row">
+
+                  <!-- Get local audio/video stream -->
+                  <div class="col-md-12 mt-3">
+                      <div class="alert text-center alert-warning" role="alert" id="enable-camera-alert">
+                          <p>Please click `allow` on the top of the screen so we can access your webcam and microphone for calls.</p>
+                          <p><strong>Failed to access the webcam and microphone.</strong></p>
+                          <a href="#" class="btn btn-warning" id="step1-retry">Try again</a>
+                      </div>
+                  </div>
+
+              </div>
+
+              <!-- Video -->
+              <div class="row mt-4">
+                  <!-- Peer Video -->
+                  <div class="col-md-8">
+                    <div class="beer-loader">
+                      <img src="dist/theme/img/beer1.gif">
+                      <h2>Finding drinking buddies...</h2>
+                    </div>
+                      <div class="embed-responsive embed-responsive-16by9 video-wrapper">
+                          <video id="their-video" class="embed-responsive-item" autoplay></video>
+                      </div>
+                  </div>
+
+                  <!-- My Video -->
+                  <div class="col-md-4">
+                      <!-- 16:9 aspect ratio -->
+                      <div class="embed-responsive embed-responsive-16by9 video-wrapper">
+                          <video id="my-video" class="embed-responsive-item" muted="true" autoplay></video>
+                      </div>
+                  </div>
+
+              </div>
+
+          </div>
+
+        <!-- <section id="call-controls">
+            <div class="container">
+                <div class="row justify-content-center mt-4 mb-0">
+
+
+                    <div class="col-md-5 pb-3" id="development-area">
+                        <div class="mx-auto" id="call-ui" style="display: none;">
+                            <a class="btn btn-warning" style="display: block;" href="#" id="new-peer-call-button">Find New Group</a>
+                            <hr>
+                        </div>
+                        <p>
+                            <b>Call Status:</b>
+                            <span id="call-connected" class="badge badge-dark">Not In Call.</span>
+                        </p>
+                        <p>
+                            <b>PeerJS Status:</b>
+                            <span id="peerjs-connected" class="badge badge-danger">Not Connected</span>
+                        </p>
+                        <p>
+                            <b>Socket.io Status:</b>
+                            <span id="socket-connected" class="badge badge-danger">Not Connected</span>
+                        </p>
+                        <p>
+                            <b>Socket ID:</b>
+                            <span id="socket-id" class="badge badge-light">null</span>
+                        </p>
+                        <p>
+                            <b>My PeerJS ID:</b>
+                            <span id="my-peerjs-id" class="badge badge-light"></span>
+                        </p>
+                        <p>
+                            <b>Their PeerJS ID:</b>
+                            <span id="their-id" class="badge badge-light">Not in call.</span>
+                        </p>
+                    </div>
+
+                </div>
+            </div> -->
+        <!-- </section> -->
+
+    </body>
+</html>
