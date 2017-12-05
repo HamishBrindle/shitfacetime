@@ -177,6 +177,8 @@ socket.on('call start', function (data) {
         var call = peerjs.call(data.peer, window.localStream);
         makeCall(call);
     }
+    // Remove loader
+    $('#overlay').hide();
 });
 /**
  * Socket.IO: Call has ended.
@@ -192,6 +194,9 @@ socket.on('call end', function (data) {
     socket.emit('call dropped');
     callConnectedUI(false, 'Not in call.'); // Display Call In Progress
     $('#their-id').text('Not in call.'); // Dev purposes display status.
+
+    // Remove loader
+    $('#overlay').show();
 });
 /**
  * Socket.IO: When disconnect of the call has occurred.
@@ -236,13 +241,6 @@ function callConnectedUI(status, message) {
     if (status != true) {
         to = 'dark';
         from = 'success';
-        $(".beer-loader").show();
-        $(".their-video").hide();
-    } else {
-        $(".beer-loader").fadeOut("slow");
-        $(".their-video").fadeIn("slow");
-        $(".their-video").css("width", "100%");
-        $(".their-video").css("height", "auto");
     }
     // UI: Peerjs connection status.
     $('#call-connected').addClass('badge-' + to).removeClass('badge-' + from);

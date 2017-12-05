@@ -14,6 +14,8 @@
 
 
 /* =================================== */
+
+
 /*  Basic Style
 /* =================================== */
 
@@ -91,51 +93,9 @@ a, a:focus, a:hover {
     color: #777777;
 }
 
-#their-video, .beer-loader {
-  width: auto;
-  height: 100%;
-  display: block;
-  margin-left: auto;
-  margin-top: auto;
-  margin-right: auto;
-  margin-bottom: auto;
-}
-
-#my-video {
-  width: auto;
-  height: 100%;
-  display: block;
-  margin-top: auto;
-  margin-bottom: auto;
-}
-
-.my-video-wrapper {
-  align-items: right;
-}
-.chat-container {
-    display: block;
-    height:600px;
-    width:90%;
-}
-
-.chat-title {
-  color: #FFF;
-  text-shadow: 4px 4px #f58e9a;
-  margin-bottom: 10px;
-}
-
-.vid-offset {
-  height: 10%;
-}
-
-.btn.active.focus,
-.btn.active:focus,
-.btn.focus,
-.btn.focus:active,
-.btn:active:focus,
-.btn:focus {
-  text-decoration: none;
-  outline: 0;
+.btn.active.focus, .btn.active:focus, .btn.focus, .btn.focus:active, .btn:active:focus, .btn:focus {
+    text-decoration: none;
+    outline: 0;
 }
 
 .card-panel {

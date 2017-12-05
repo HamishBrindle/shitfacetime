@@ -100,6 +100,8 @@ socket.on('call start', function(data) {
         var call = peerjs.call(data.peer, window.localStream);
         makeCall(call);
     }
+    // Remove loader
+    $('#overlay').hide();
 });
 /**
  * Socket.IO: Call has ended.
@@ -115,6 +117,9 @@ socket.on('call end', function(data) {
     socket.emit('call dropped');
     callConnectedUI(false, 'Not in call.'); // Display Call In Progress
     $('#their-id').text('Not in call.'); // Dev purposes display status.
+
+    // Remove loader
+    $('#overlay').show();
 });
 /**
  * Socket.IO: When disconnect of the call has occurred.

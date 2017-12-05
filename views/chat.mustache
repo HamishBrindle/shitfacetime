@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="utf-8">
-<title>🍻 ShitFaceTime 🍻</title>
-<link rel="icon" href="img/shitface.png">
+	<meta charset="utf-8">
+	<title>🍻 ShitFaceTime 🍻</title>
+	<link rel="icon" href="img/shitface.png">
 
-<!-- Bootstrap -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 
-<!-- Our CSS -->
-<link href="https://fonts.googleapis.com/css?family=Poppins:300,500,600,900" rel="stylesheet">
-	<!--
-	CSS
-	============================================= -->
+	<link href="https://fonts.googleapis.com/css?family=Poppins:300,500,600,900" rel="stylesheet">
+
 	<link rel="stylesheet" href="dist/theme/css/linearicons.css">
 	<link rel="stylesheet" href="dist/theme/css/font-awesome.min.css">
 	<link rel="stylesheet" href="dist/theme/css/nice-select.css">
 	<link rel="stylesheet" href="dist/theme/css/magnific-popup.css">
 	<link rel="stylesheet" href="dist/theme/css/bootstrap.css">
 	<link rel="stylesheet" href="dist/theme/css/main.css">
+
+	<!-- Our CSS -->
+	<link rel="stylesheet" href="dist/style.css">
+
 </head>
 
 <!-- Load page-specific scripts -->
@@ -28,102 +30,101 @@
 
 <!-- Our client-side application -->
 <!-- TODO: require jQuery, Socket.io, and Peerjs from within this file -->
-  <script type="text/javascript" src="dist/App.bundle.js"></script>
-  <script type="text/javascript" src="main.js"></script>
+<script type="text/javascript" src="dist/App.bundle.js"></script>
+<script type="text/javascript" src="main.js"></script>
 
 </head>
+
 <body>
 
-  <!-- Main App Section -->
-  <div id="app">
+	<!-- Main App Section -->
+	<div id="app" class="chat">
 
-    <div class="main-wrapper-first relative">
+		<div class="main-wrapper-first relative">
+			<header>
+				<div class="container">
+					<div class="header-wrap">
+						<div class="header-top d-flex justify-content-between align-items-center">
+							<div class="logo">
+								<a href="index.html"><img src="img/logo.png" alt=""></a>
+							</div>
+							<div class="main-menubar d-flex align-items-center">
+								<nav class="hide">
+									<a href="index.html">Home</a>
+									<a href="generic.html">Generic</a>
+									<a href="elements.html">Elements</a>
+								</nav>
+								<div class="menu-bar"><span class="lnr lnr-menu"></span></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</header>
+			<div class="banner-area">
+				<div class="chat-container">
+					<!-- Errors/Status -->
+					<div class="row">
+						<!-- Get local audio/video stream -->
+						<div class="col-md-12 mt-3">
+							<div class="alert text-center alert-warning" role="alert" id="enable-camera-alert">
+								<p>Please click `allow` on the top of the screen so we can access your webcam and microphone for calls.</p>
+								<p><strong>Failed to access the webcam and microphone.</strong></p>
+								<a href="#" class="btn btn-warning" id="step1-retry">Try again</a>
+							</div>
+						</div>
+					</div>
 
-    <div class="banner-area">
-      <div class="chat-container">
-          <!-- Errors/Status -->
-          <div class="row">
-              <!-- Get local audio/video stream -->
-              <div class="col-md-12 mt-3">
-                  <div class="alert text-center alert-warning" role="alert" id="enable-camera-alert">
-                      <p>Please click `allow` on the top of the screen so we can access your webcam and microphone for calls.</p>
-                      <p><strong>Failed to access the webcam and microphone.</strong></p>
-                      <a href="#" class="btn btn-warning" id="step1-retry">Try again</a>
-                  </div>
-              </div>
+					<div class="banner-content text-center">
+						<h1 id="chat-banner" class="text-uppercase">Tonight You Join Forces</h1>
+					</div>
+					<!-- Video -->
+					<div class="video-wrapper">
+						<!-- Peer Video -->
+						<div class="away-video embed-responsive embed-responsive-16by9">
+							<div id="overlay" class="video-loader">
+								<h2 id="video-loader-title">Looking...</h2>
+								<div class="goo-loader">
+									<svg>
+											<defs>
+													<filter id="goo">
+															<feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur" />
+															<feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
 
-          </div>
-          <div class="row vid-offset">
-          </div>
+													</filter>
+											</defs>
+									</svg>
+									<div class="holder goo1">
+										<div></div>
+										<div></div>
+										<div></div>
+										<div></div>
+										<div></div>
+									</div>
+								</div>
+							</div>
+							<video id="their-video" class="embed-responsive-item" autoplay></video>
+						</div>
+						<!-- My Video -->
+						<!-- 16:9 aspect ratio -->
+						<div class="home-video embed-responsive embed-responsive-16by9">
+							<video id="my-video" class="embed-responsive-item" muted="true" autoplay></video>
+						</div>
+					</div>
+				</div>
 
-          <!-- Video -->
-          <div class="row">
-              <!-- Peer Video -->
-              <div class="col-md-1"></div>
-              <div class="col-md-7">
-                <div class="beer-loader">
-                  <img src="dist/theme/img/beer1.gif">
-                  <h2 >Finding drinking buddies...</h2>
-                </div>
-                  <div class="embed-responsive embed-responsive-16by9 video-wrapper their-video">
-                      <video id="their-video" class="embed-responsive-item" autoplay></video>
-                  </div>
-              </div>
+			</div>
+		</div>
+	</div>
+	</div>
 
-              <!-- My Video -->
-              <div class="col-md-4" style="float: right">
-                  <!-- 16:9 aspect ratio -->
-                  <div class="embed-responsive embed-responsive-16by9 video-wrapper my-video-wrapper">
-                      <video id="my-video" class="embed-responsive-item" muted="true" autoplay></video>
-                  </div>
-              </div>
+	<script src="dist/theme/js/vendor/jquery-2.2.4.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+	<script src="dist/theme/js/vendor/bootstrap.min.js"></script>
+	<script src="dist/theme/js/jquery.ajaxchimp.min.js"></script>
+	<script src="dist/theme/js/jquery.nice-select.min.js"></script>
+	<script src="dist/theme/js/jquery.magnific-popup.min.js"></script>
+	<script src="dist/theme/js/main.js"></script>
+	
+</body>
 
-          </div>
-          <div class="row vid-offset">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-      <!-- <section id="call-controls">
-          <div class="container">
-              <div class="row justify-content-center mt-4 mb-0">
-
-
-                  <div class="col-md-5 pb-3" id="development-area">
-                      <div class="mx-auto" id="call-ui" style="display: none;">
-                          <a class="btn btn-warning" style="display: block;" href="#" id="new-peer-call-button">Find New Group</a>
-                          <hr>
-                      </div>
-                      <p>
-                          <b>Call Status:</b>
-                          <span id="call-connected" class="badge badge-dark">Not In Call.</span>
-                      </p>
-                      <p>
-                          <b>PeerJS Status:</b>
-                          <span id="peerjs-connected" class="badge badge-danger">Not Connected</span>
-                      </p>
-                      <p>
-                          <b>Socket.io Status:</b>
-                          <span id="socket-connected" class="badge badge-danger">Not Connected</span>
-                      </p>
-                      <p>
-                          <b>Socket ID:</b>
-                          <span id="socket-id" class="badge badge-light">null</span>
-                      </p>
-                      <p>
-                          <b>My PeerJS ID:</b>
-                          <span id="my-peerjs-id" class="badge badge-light"></span>
-                      </p>
-                      <p>
-                          <b>Their PeerJS ID:</b>
-                          <span id="their-id" class="badge badge-light">Not in call.</span>
-                      </p>
-                  </div>
-
-              </div>
-          </div> -->
-      <!-- </section> -->
-
-  </body>
 </html>

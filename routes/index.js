@@ -6,7 +6,6 @@ router.get('/', (req, res) => {
     res.render('home');
 });
 
-// Do work here
 router.get('/test', (req, res) => {
     res.render('test');
 });
