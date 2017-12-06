@@ -22,18 +22,18 @@ var peerSettings = {　
         },
         {
             url: "turn:global.turn.twilio.com:3478?transport=udp",
-            username: "d44a3662a61e115cf3df7254d44d6b276d90300d065a1560a1618fa49bbdd5f3",
-            credential: "0JZh27bgCb3oM0EmXKkctvuQT6S5qIJJthvUxho20r8="
+            username: "6126da033a7be666f10a3f1c0a4bf26f0111c0ac7e7ebd9e3503a181f9e51d8c",
+            credential: "bM0+RW4MfPkSJRkGMtdo26vI36/USjTt6zG4Eaitt8s="
         },
         {
             url: "turn:global.turn.twilio.com:3478?transport=tcp",
-            username: "d44a3662a61e115cf3df7254d44d6b276d90300d065a1560a1618fa49bbdd5f3",
-            credential: "0JZh27bgCb3oM0EmXKkctvuQT6S5qIJJthvUxho20r8="
+            username: "6126da033a7be666f10a3f1c0a4bf26f0111c0ac7e7ebd9e3503a181f9e51d8c",
+            credential: "bM0+RW4MfPkSJRkGMtdo26vI36/USjTt6zG4Eaitt8s="
         },
         {
             url: "turn:global.turn.twilio.com:443?transport=tcp",
-            username: "d44a3662a61e115cf3df7254d44d6b276d90300d065a1560a1618fa49bbdd5f3",
-            credential: "0JZh27bgCb3oM0EmXKkctvuQT6S5qIJJthvUxho20r8="
+            username: "6126da033a7be666f10a3f1c0a4bf26f0111c0ac7e7ebd9e3503a181f9e51d8c",
+            credential: "bM0+RW4MfPkSJRkGMtdo26vI36/USjTt6zG4Eaitt8s="
         }
     ]}
 };
