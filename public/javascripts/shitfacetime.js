@@ -66,7 +66,8 @@ function startCall(peerid) {
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     navigator.getUserMedia({video: true, audio: true}, function(stream) {
 
-        console.log("Starting new call.");
+        // Call loading callback.
+        onCallLoading();
 
         // Hangup previous call.
         hangupCall();
@@ -96,6 +97,7 @@ function startCall(peerid) {
         // Display Call In Progress
         callConnectedUI(true, "In Call");
     }, function(err) {
+        onClientLoadVideoFailed();
         console.log('Failed to get local stream' ,err);
     });
 }
@@ -109,6 +111,10 @@ function startCall(peerid) {
  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
  peerjs.on('call', function(call) {
      navigator.getUserMedia({video: true, audio: true}, function(stream) {
+
+         // Call loading callback.
+         onCallLoading();
+
          // Display Call In Progress
          callConnectedUI(true, "Loading Video..");
 
@@ -139,6 +145,9 @@ function startCall(peerid) {
              // Display error message.
              console.log('Error connecting call, retry.');
 
+             // Call failed, retry callback.
+             onCallFailedRetry();
+
              // If the call is working, but not displaying anything close.
              // TODO: Check if its displaying anything.
              if (call.open) {
@@ -163,6 +172,8 @@ function startCall(peerid) {
          // Display Call In Progress
          callConnectedUI(true, "In Call");
      }, function(err) {
+         // Client video failed to load callback.
+         onClientLoadVideoFailed();
          console.log('Failed to get local stream' ,err);
      });
  });
@@ -175,6 +186,9 @@ function startCall(peerid) {
 peerjs.on('disconnected', function() {
     // Reconnect user.
     peerjs.reconnect();
+
+    // Call failed, retry callback.
+    onCallFailedRetry();
 
     // Dislay disconnected
     console.log("Disconnected");
@@ -189,6 +203,9 @@ peerjs.on('disconnected', function() {
 peerjs.on('error', function(err) {
     // Reconnect user.
     peerjs.reconnect();
+
+    // Call failed, retry callback.
+    onCallFailedRetry();
 
     // Display Call In Progress
     callConnectedUI(false, 'Calling Failed.');
@@ -243,6 +260,10 @@ socket.on('call start', function(data) {
     // Ensure only one person starts the call.
     if (data.caller == 'this')
     {
+        // Find party callback.
+        onFindingParty();
+
+        // Start a new call.
         startCall(data.peer);
     }
 });
@@ -273,6 +294,10 @@ socket.on('partner disconnected', function(data) {
 * @return void
 */
 socket.on('disconnect', function() {
+    // Client has disconnected callback.
+    onClientDisconnected();
+
+    // Display console message.
     console.log('Connection fell or your browser is closing.');
 });
 
@@ -345,6 +370,9 @@ function findPeer() {
 
     // Ensure services are connected.
     if (socketConnected && peerConnected) {
+        // When client is ready to call.
+        onClientReady();
+
         // Send peerid and find call partner.
         socket.emit('peerid', peerjs.id);
     }
@@ -358,9 +386,17 @@ function findPeer() {
 function setupCall() {
     // Get audio/video stream
     navigator.getUserMedia({ audio: true, video: true }, function(stream) {
-        $('#my-video').prop('src', URL.createObjectURL(stream)); // Set your video displays
-        window.localStream = stream; // Make stream
+        // Set your local stream video to display.
+        $('#my-video').prop('src', URL.createObjectURL(stream));
+
+        // Save stream video.
+        window.localStream = stream;
+
+        // Hide the enable camera alert.
         $('#enable-camera-alert').hide();
+
+        // Client video added successfuly.
+        onClientLoadVideoSuccess();
     }, function(err) {
         console.log('Failed to get local stream', err);
     });
