@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const socketIO = require('socket.io');
 const http = require('http');
 const https = require('https');
 const fs = require('fs');
@@ -57,8 +56,10 @@ if (environment === 'production') {
     });
 }
 
-// Get our Socket.io connection
-const io = socketIO(server);
+// Get our Socket.io connection, and start the heartbeat.
+var io = require('socket.io')(server);
+io.set('heartbeat timeout', 4000);
+io.set('heartbeat interval', 2000);
 
 // Prepare Variables For Video Chat.
 var queue = []; // list of sockets waiting for peers
@@ -121,6 +122,22 @@ io.on('connection', function(socket) {
         findPeerForLoneSocket(socket); // Check if is in queue.
     });
 
+    // Emitted when a user needs a new call.
+    socket.on('new call', function() {
+
+        // Grab room.
+        var room = String(rooms[socket.id]);
+
+        // Leave the room.
+        socket.leave(room);
+
+        // Reset the rooms array.
+        rooms[socket.id] = null; // Deletes the room from the user.
+
+        // Find a new call to match with.
+        findPeerForLoneSocket(socket); // Check if is in queue.
+    });
+
     // When a socket disconnects.
     socket.on('disconnect', function() {
         // Display user disconnected, and remove socket from active user.
@@ -136,9 +153,10 @@ io.on('connection', function(socket) {
         if (room != null) {
             socket.leave(room); // Remove current disconnected user.
             rooms[socket.id] = null; // Deletes the room from the user.
+            peerids[socket.id] = null; // Remove PeerJS ID From List.
 
-            // End their call.
-            socket.broadcast.to(room).emit('call end');
+            // End active users call, and find them a new partner.
+            socket.broadcast.to(room).emit('partner disconnected');
         }
     });
 
@@ -147,7 +165,7 @@ io.on('connection', function(socket) {
      *
      * @return void
      */
-    socket.on('call dropped', function() {
+    socket.on('partner disconnected', function() {
         // Make them leave the room.
         var room = String(rooms[socket.id]);
         socket.leave(room); // Remove current disconnected user.
