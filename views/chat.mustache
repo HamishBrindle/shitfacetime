@@ -39,41 +39,17 @@
 <body>
 
 	<!-- Main App Section -->
-	<div id="app" class="chat">
-
-		<div class="main-wrapper-first relative">
-			<header>
-				<div class="container">
-					<div class="header-wrap">
-						<div class="header-top d-flex justify-content-between align-items-center">
-							<div class="logo">
-								<a href="index.html"><img src="img/logo.png" alt=""></a>
-							</div>
-							<div class="main-menubar d-flex align-items-center">
-								<nav class="hide">
-									<a href="index.html">Home</a>
-									<a href="generic.html">Generic</a>
-									<a href="elements.html">Elements</a>
-								</nav>
-								<div class="menu-bar"><span class="lnr lnr-menu"></span></div>
-							</div>
-						</div>
-					</div>
+	<div id="app banner-area">
+		<div class="chat-container">
+			<!-- Errors/Status -->
+			<!-- Get local audio/video stream -->
+			<div class="help-banner">
+				<div class="alert text-center alert-warning" role="alert" id="enable-camera-alert">
+					<p>Please click `allow` on the top of the screen so we can access your webcam and microphone for calls.</p>
+					<p><strong>Failed to access the webcam and microphone.</strong></p>
+					<a href="#" class="btn btn-warning" id="step1-retry">Try again</a>
 				</div>
-			</header>
-			<div class="banner-area">
-				<div class="chat-container">
-					<!-- Errors/Status -->
-					<div class="row">
-						<!-- Get local audio/video stream -->
-						<div class="col-md-12 mt-3">
-							<div class="alert text-center alert-warning" role="alert" id="enable-camera-alert">
-								<p>Please click `allow` on the top of the screen so we can access your webcam and microphone for calls.</p>
-								<p><strong>Failed to access the webcam and microphone.</strong></p>
-								<a href="#" class="btn btn-warning" id="step1-retry">Try again</a>
-							</div>
-						</div>
-					</div>
+			</div>
 
 					<div class="banner-content text-center">
 						<h1 id="chat-banner" class="text-uppercase">Tonight You Join Forces</h1>
@@ -130,9 +106,13 @@
 						</div>
 					</div>
 				</div>
+				<!-- My Video -->
+				<!-- 16:9 aspect ratio -->
+				<div class="home-video embed-responsive embed-responsive-16by9">
+					<video id="my-video" class="embed-responsive-item" muted="true" autoplay></video>
+				</div>
 			</div>
 		</div>
-	</div>
 	</div>
 
 	<script src="dist/theme/js/vendor/jquery-2.2.4.min.js"></script>
