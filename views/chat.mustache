@@ -17,6 +17,7 @@
 	<link rel="stylesheet" href="dist/theme/css/magnific-popup.css">
 	<link rel="stylesheet" href="dist/theme/css/bootstrap.css">
 	<link rel="stylesheet" href="dist/theme/css/main.css">
+	<link rel="stylesheet" href="dist/overlay.scss">
 
 	<!-- Our CSS -->
 	<link rel="stylesheet" href="dist/style.css">
@@ -49,34 +50,59 @@
 					<a href="#" class="btn btn-warning" id="step1-retry">Try again</a>
 				</div>
 			</div>
+					<div class="banner-content text-center">
+						<h1 id="chat-banner" class="text-uppercase">Tonight You Join Forces</h1>
+					</div>
+					<!-- Video -->
+					<div class="video-wrapper">
 
+						<div class="away-video embed-responsive embed-responsive-16by9">
+							<div id="overlay" class="video-loader">
+								<!-- Peer Video -->
 
-			<div class="banner-content text-center">
-				<h1 id="chat-banner" class="text-uppercase">Tonight You Join Forces</h1>
-			</div>
-			<!-- Video -->
-			<div class="video-wrapper">
-				<!-- Peer Video -->
-				<div class="away-video embed-responsive embed-responsive-16by9">
-					<div id="overlay" class="video-loader">
-						<h1 id="video-loader-title">Looking...</h2>
-						<div class="goo-loader">
-							<svg>
-									<defs>
-											<filter id="goo">
-													<feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur" />
-													<feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
-											</filter>
-									</defs>
-							</svg>
-							<div class="holder goo1">
-								<div></div>
-								<div></div>
-								<div></div>
-								<div></div>
-								<div></div>
+								<h2 id="video-loader-title">Looking...</h2>
+								<div class="goo-loader">
+									<svg>
+											<defs>
+													<filter id="goo">
+															<feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur" />
+															<feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+													</filter>
+											</defs>
+									</svg>
+									<div class="holder goo1">
+										<div></div>
+										<div></div>
+										<div></div>
+										<div></div>
+										<div></div>
+									</div>
+								</div>
 							</div>
+							<div class="user-button-panel">
+							 <div class="mute-button-wrapper">
+								 <div class="muted-microphone">
+									 <img src="img/mute-microphone.png">
+								 </div>
+								 <div class="unmuted-microphone">
+									 <img src="img/unmute-microphone.png">
+								 </div>
+								 <div class="muted-speaker">
+									 <img src="img/mute-speaker.png">
+								 </div>
+								 <div class="unmuted-speaker">
+									 <img src="img/unmute-speaker.png">
+								 </div>
+							 </div>
+						 </div>
+							<!-- <video id="their-video" class="embed-responsive-item" autoplay muted="false"></video> -->
 						</div>
+						<!-- My Video -->
+						<!-- 16:9 aspect ratio -->
+						<!-- <div class="home-video embed-responsive embed-responsive-16by9">
+							<video id="my-video" class="embed-responsive-item" muted="true" autoplay></video>
+
+						</div> -->
 					</div>
 					<video id="their-video" class="embed-responsive-item" autoplay></video>
 				</div>
