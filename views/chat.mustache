@@ -38,7 +38,7 @@
 <body>
 
 	<!-- Main App Section -->
-	<div id="app banner-area">
+	<div id="app">
 		<div class="chat-container">
 			<!-- Errors/Status -->
 			<!-- Get local audio/video stream -->
@@ -50,41 +50,85 @@
 				</div>
 			</div>
 
-
 			<div class="banner-content text-center">
 				<h1 id="chat-banner" class="text-uppercase">Tonight You Join Forces</h1>
 			</div>
 			<!-- Video -->
-			<div class="video-wrapper">
-				<!-- Peer Video -->
-				<div class="away-video embed-responsive embed-responsive-16by9">
-					<div id="overlay" class="video-loader">
-						<h1 id="video-loader-title">Looking...</h2>
-						<div class="goo-loader">
-							<svg>
-									<defs>
-											<filter id="goo">
-													<feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur" />
-													<feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
-											</filter>
-									</defs>
-							</svg>
-							<div class="holder goo1">
-								<div></div>
-								<div></div>
-								<div></div>
-								<div></div>
-								<div></div>
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-8">
+						<div class="video-wrapper">
+							<!-- Peer Video -->
+							<div class="away-video embed-responsive embed-responsive-16by9">
+								<div id="overlay" class="video-loader">
+									<h1 id="video-loader-title">Looking...</h2>
+									<div class="goo-loader">
+										<svg>
+												<defs>
+														<filter id="goo">
+																<feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur" />
+																<feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+														</filter>
+												</defs>
+										</svg>
+										<div class="holder goo1">
+											<div></div>
+											<div></div>
+											<div></div>
+											<div></div>
+											<div></div>
+										</div>
+									</div>
+								</div>
+								<video id="their-video" class="embed-responsive-item" autoplay></video>
+							</div>
+							<!-- My Video -->
+							<!-- 16:9 aspect ratio -->
+							<div class="home-video embed-responsive embed-responsive-16by9">
+								<video id="my-video" class="embed-responsive-item" muted="true" autoplay></video>
 							</div>
 						</div>
+			    </div>
+					<div class="col-lg-4">
+					  <div class="text-chat">
+							<div class="chat">
+								<ul>
+								  <div class="bubble left">
+								    <div class="content">
+								    </div>
+								  </div>
+								  <div class="bubble right">
+								    <div class="content">At vero eos et accusam et justo duo dolores.
+								    </div>
+								  </div>
+								  <div class="bubble left">
+								    <div class="content">At vero eos et accusam et justo duo dolores.
+								    </div>
+								  </div>
+								  <div class="bubble right">
+								    <div class="content">Stet clita kasd gubergren, no sea takimata sanctus est Lorem vero eos et accusam et justo duo dolores et ipsum dolor sit amet.  At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+								    </div>
+								  </div>
+								  <div class="bubble left">
+								    <div class="content">At vero eos et accusam et justo duo dolores.
+								    </div>
+								  </div>
+								  <div class="bubble left">
+								    <div class="content">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+								    </div>
+								  </div>
+								</ul>
+							</div>
+							<div id="message-content">
+								<textarea name="message"></textarea>
+							</div>
+							<div class="chat-controls">
+								<button type="button" name="button" id="message-send">SEND</button>
+								<button type="button" name="button">EMOJI💩</button>
+							</div>
+					  </div>
 					</div>
-					<video id="their-video" class="embed-responsive-item" autoplay></video>
-				</div>
-				<!-- My Video -->
-				<!-- 16:9 aspect ratio -->
-				<div class="home-video embed-responsive embed-responsive-16by9">
-					<video id="my-video" class="embed-responsive-item" muted="true" autoplay></video>
-				</div>
+			  </div>
 			</div>
 		</div>
 	</div>

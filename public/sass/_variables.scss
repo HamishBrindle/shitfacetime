@@ -3,3 +3,27 @@ $development-area: #282b30;
 $white: #FFF;
 
 $theme-pink: #f58e9a;
+
+$purple: #7539dd;
+$yellow: #F8DC25;
+// Text Chat variables-------------------------------------------
+$color-in: #fff;
+$color-out: #000;
+$background-color-in: #E64A19;
+$background-color-out: #E0E0E0;
+$tip-stroke: 30px;
+$tip-width: 50px;
+$tip-margin: 20px;
+$tip-height: 40px;
+$radius: 100% 100%;
+$tip-x: $tip-stroke - $tip-width;
+$tip-inset: $tip-height*0.75;
+$tip-y: $tip-height*-1 + $tip-inset;
+$tip-stroke-y: 9px;
+$tip-stroke-size: $tip-stroke-y*-1;
+$tip-stroke-x: $tip-stroke*-1 + $tip-stroke-size + 1;
+$font-family: 'Roboto', sans-serif;
+$font-weight: 300;
+$font-size: 12px;
+$line-height: 1.4;
+$content-padding: 10px;
