@@ -124,7 +124,6 @@ io.on('connection', function(socket) {
 
     // Emitted when a user needs a new call.
     socket.on('new call', function() {
-
         // Grab room.
         var room = String(rooms[socket.id]);
 
