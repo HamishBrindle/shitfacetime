@@ -17,6 +17,7 @@
 	<link rel="stylesheet" href="dist/theme/css/magnific-popup.css">
 	<link rel="stylesheet" href="dist/theme/css/bootstrap.css">
 	<link rel="stylesheet" href="dist/theme/css/main.css">
+	<link rel="stylesheet" href="dist/overlay.scss">
 
 	<!-- Our CSS -->
 	<link rel="stylesheet" href="dist/style.css">
@@ -79,9 +80,11 @@
 					</div>
 					<!-- Video -->
 					<div class="video-wrapper">
-						<!-- Peer Video -->
+
 						<div class="away-video embed-responsive embed-responsive-16by9">
 							<div id="overlay" class="video-loader">
+								<!-- Peer Video -->
+
 								<h2 id="video-loader-title">Looking...</h2>
 								<div class="goo-loader">
 									<svg>
@@ -102,7 +105,23 @@
 									</div>
 								</div>
 							</div>
-							<video id="their-video" class="embed-responsive-item" autoplay></video>
+							<div class="user-button-panel">
+							 <div class="mute-button-wrapper">
+								 <div class="muted-microphone">
+									 <img src="img/mute-microphone.png">
+								 </div>
+								 <div class="unmuted-microphone">
+									 <img src="img/unmute-microphone.png">
+								 </div>
+								 <div class="muted-speaker">
+									 <img src="img/mute-speaker.png">
+								 </div>
+								 <div class="unmuted-speaker">
+									 <img src="img/unmute-speaker.png">
+								 </div>
+							 </div>
+						 </div>
+							<video id="their-video" class="embed-responsive-item" autoplay muted="false"></video>
 						</div>
 						<!-- My Video -->
 						<!-- 16:9 aspect ratio -->
@@ -111,7 +130,6 @@
 						</div>
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>
@@ -124,7 +142,7 @@
 	<script src="dist/theme/js/jquery.nice-select.min.js"></script>
 	<script src="dist/theme/js/jquery.magnific-popup.min.js"></script>
 	<script src="dist/theme/js/main.js"></script>
-	
+
 </body>
 
 </html>
