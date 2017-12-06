@@ -74,6 +74,8 @@ var connectedUsers = new Set();
 var findPeerForLoneSocket = function(you) {
     if (queue.length > 0) {
 
+
+
         // Somebody is in queue, pair them!
         var them = queue.pop();
 
@@ -172,5 +174,18 @@ io.on('connection', function(socket) {
 
         // Find a peer for the other user.
         findPeerForLoneSocket(allUsers[socket.id]);
+    });
+
+    // Recieve a chat message to broadcast.
+    socket.on('chat message', function(msg) {
+        // Check if the user is in a room!
+        var room = String(rooms[socket.id]);
+        if (room != null) {
+            // Send message to the room with message.
+            socket.broadcast.to(room).emit('chat message', {
+                'message': msg,
+                'sender': socket.id
+            });
+        }
     });
 });

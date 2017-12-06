@@ -143,7 +143,8 @@ function startCall(peerid) {
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     navigator.getUserMedia({ video: true, audio: true }, function (stream) {
 
-        console.log("Starting new call.");
+        // Call loading callback.
+        onCallLoading();
 
         // Hangup previous call.
         hangupCall();
@@ -173,6 +174,7 @@ function startCall(peerid) {
         // Display Call In Progress
         callConnectedUI(true, "In Call");
     }, function (err) {
+        onClientLoadVideoFailed();
         console.log('Failed to get local stream', err);
     });
 }
@@ -186,6 +188,10 @@ function startCall(peerid) {
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 peerjs.on('call', function (call) {
     navigator.getUserMedia({ video: true, audio: true }, function (stream) {
+
+        // Call loading callback.
+        onCallLoading();
+
         // Display Call In Progress
         callConnectedUI(true, "Loading Video..");
 
@@ -216,6 +222,9 @@ peerjs.on('call', function (call) {
             // Display error message.
             console.log('Error connecting call, retry.');
 
+            // Call failed, retry callback.
+            onCallFailedRetry();
+
             // If the call is working, but not displaying anything close.
             // TODO: Check if its displaying anything.
             if (call.open) {
@@ -240,6 +249,8 @@ peerjs.on('call', function (call) {
         // Display Call In Progress
         callConnectedUI(true, "In Call");
     }, function (err) {
+        // Client video failed to load callback.
+        onClientLoadVideoFailed();
         console.log('Failed to get local stream', err);
     });
 });
@@ -252,6 +263,9 @@ peerjs.on('call', function (call) {
 peerjs.on('disconnected', function () {
     // Reconnect user.
     peerjs.reconnect();
+
+    // Call failed, retry callback.
+    onCallFailedRetry();
 
     // Dislay disconnected
     console.log("Disconnected");
@@ -266,6 +280,9 @@ peerjs.on('disconnected', function () {
 peerjs.on('error', function (err) {
     // Reconnect user.
     peerjs.reconnect();
+
+    // Call failed, retry callback.
+    onCallFailedRetry();
 
     // Display Call In Progress
     callConnectedUI(false, 'Calling Failed.');
@@ -319,6 +336,10 @@ socket.on('call start', function (data) {
 
     // Ensure only one person starts the call.
     if (data.caller == 'this') {
+        // Find party callback.
+        onFindingParty();
+
+        // Start a new call.
         startCall(data.peer);
     }
 });
@@ -349,7 +370,29 @@ socket.on('partner disconnected', function (data) {
 * @return void
 */
 socket.on('disconnect', function () {
+    // Client has disconnected callback.
+    onClientDisconnected();
+
+    // Display console message.
     console.log('Connection fell or your browser is closing.');
+});
+
+/**
+ * Adds a chat message to the chat area.
+ *
+ * @param msg
+ * @return void
+ */
+socket.on('chat message', function (data) {
+
+    // Ensure sender does not display their own message.
+    if (data.sender != socket.id) {
+        // Append your value instead.
+        var html = '<div class="bubble left"><div class="content">' + data.message + '</div></div>';
+
+        // Add chat message to chat area.
+        $('#chat-area').append(html);
+    }
 });
 
 /**
@@ -423,6 +466,9 @@ function findPeer() {
 
     // Ensure services are connected.
     if (socketConnected && peerConnected) {
+        // When client is ready to call.
+        onClientReady();
+
         // Send peerid and find call partner.
         socket.emit('peerid', peerjs.id);
     }
@@ -436,9 +482,17 @@ function findPeer() {
 function setupCall() {
     // Get audio/video stream
     navigator.getUserMedia({ audio: true, video: true }, function (stream) {
-        $('#my-video').prop('src', URL.createObjectURL(stream)); // Set your video displays
-        window.localStream = stream; // Make stream
+        // Set your local stream video to display.
+        $('#my-video').prop('src', URL.createObjectURL(stream));
+
+        // Save stream video.
+        window.localStream = stream;
+
+        // Hide the enable camera alert.
         $('#enable-camera-alert').hide();
+
+        // Client video added successfuly.
+        onClientLoadVideoSuccess();
     }, function (err) {
         console.log('Failed to get local stream', err);
     });
@@ -608,6 +662,21 @@ function onClientDisconnected() {}
 
 // Click handlers setup
 $(function () {
+
+    // Sending messages
+    $('#message-send').click(function () {
+        sendChatMessage();
+        return false;
+    });
+
+    // When user enters keypress.
+    $(document).keypress(function (e) {
+        if (e.which == 13) {
+            sendChatMessage();
+            return false;
+        }
+    });
+
     // Retry if getUserMedia fails
     $('#step1-retry').click(function () {
         setupCall();
@@ -616,6 +685,30 @@ $(function () {
     // Get things started
     setupCall();
 });
+
+// Sends a chat message.
+function sendChatMessage() {
+
+    // Check if message is empty.
+    if ($('#m').val() == '') {
+        return;
+    }
+
+    // Append your value instead.
+    var html = '<div class="bubble right"><div class="content">' + $('#m').val() + '</div></div>';
+
+    // Add chat message to chat area.
+    $('#chat-area').append(html);
+
+    // Emits the chat message to the server.
+    socket.emit('chat message', $('#m').val());
+
+    // Scroll to new message.
+    $('.chat').scrollTop($('.chat')[0].scrollHeight);
+
+    // Resets the value.
+    $('#m').val('');
+}
 
 /***/ })
 /******/ ]);

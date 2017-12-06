@@ -302,6 +302,24 @@ socket.on('disconnect', function() {
 });
 
 /**
+ * Adds a chat message to the chat area.
+ *
+ * @param msg
+ * @return void
+ */
+socket.on('chat message', function(data) {
+
+    // Ensure sender does not display their own message.
+    if (data.sender != socket.id) {
+        // Append your value instead.
+        var html = '<div class="bubble left"><div class="content">' + data.message + '</div></div>';
+
+        // Add chat message to chat area.
+        $('#chat-area').append(html);
+    }
+});
+
+/**
 * Socket.IO: Helper function to toggle the UI when socket.io is connected.
 *
 * @return void
@@ -564,6 +582,21 @@ function onClientDisconnected() {
 
 // Click handlers setup
 $(function() {
+
+     // Sending messages
+     $('#message-send').click(function() {
+         sendChatMessage();
+         return false;
+     });
+
+     // When user enters keypress.
+     $(document).keypress(function(e) {
+         if(e.which == 13) {
+             sendChatMessage();
+             return false;
+         }
+     });
+
     // Retry if getUserMedia fails
     $('#step1-retry').click(function() {
         setupCall();
@@ -572,3 +605,27 @@ $(function() {
     // Get things started
     setupCall();
 });
+
+// Sends a chat message.
+function sendChatMessage() {
+
+    // Check if message is empty.
+    if ($('#m').val() == '') {
+        return;
+    }
+
+    // Append your value instead.
+    var html = '<div class="bubble right"><div class="content">' + $('#m').val() + '</div></div>';
+
+    // Add chat message to chat area.
+    $('#chat-area').append(html);
+
+    // Emits the chat message to the server.
+    socket.emit('chat message', $('#m').val());
+
+    // Scroll to new message.
+    $('.chat').scrollTop($('.chat')[0].scrollHeight);
+
+    // Resets the value.
+    $('#m').val('');
+}
