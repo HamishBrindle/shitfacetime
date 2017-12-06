@@ -82,7 +82,7 @@
 __webpack_require__(0);
 
 // Compatibility shim
-// navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
 // General Variables
 var APP_NAME = 'SFT';
@@ -140,13 +140,9 @@ peerjs.on('open', function () {
  * @type void
  */
 function startCall(peerid) {
-    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     navigator.getUserMedia({ video: true, audio: true }, function (stream) {
         // Display console message.
         consoleMessage('startCall()');
-
-        // Call loading callback.
-        onCallLoading();
 
         // Call Connecting Message.
         callConnectedUI(true, "Call Connecting");
@@ -154,17 +150,30 @@ function startCall(peerid) {
         // Hangup previous call.
         hangupCall();
 
-        // Start a new call.
+        // Start a new call with other peer, and pass your stream.
         var call = peerjs.call(peerid, stream);
+
+        // Save the call in our globals.
+        window.existingCall = call;
+
+        // Display calling peers ID.
+        $('#their-id').text(call.peer);
+
+        // Call loading callback.
+        onCallLoading();
 
         // Wait for stream on the call.
         call.on('stream', function (remoteStream) {
-            onCallConnected();
+            // Display Call In Progress
+            callConnectedUI(true, "In Call");
+
+            // XXX: onCallConnected();
             $('#their-video').prop('src', URL.createObjectURL(remoteStream)); // Display other partys video stream.
         });
 
         // When call has stopped.
         call.on('close', function () {
+            $('#their-video').prop('src', ''); // Remove other partys video connection.
             onCallEnded();
         });
 
@@ -196,9 +205,6 @@ function startCall(peerid) {
         // COMBAK: Dev UI stuff
         window.existingCall = call;
         $('#their-id').text(call.peer);
-
-        // Display Call In Progress
-        callConnectedUI(true, "In Call");
     }, function (err) {
         clientLoadVideoFailed();
         console.log('Failed to get local stream', err);
@@ -211,18 +217,14 @@ function startCall(peerid) {
  * @param call - Recieving call.
  * @return void
  */
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 peerjs.on('call', function (call) {
     navigator.getUserMedia({ video: true, audio: true }, function (stream) {
 
         // Display console message.
         consoleMessage('startCall()');
 
-        // Call loading callback.
-        onCallLoading();
-
         // Call Connecting Message.
-        callConnectedUI(true, "Call Connecting");
+        callConnectedUI(true, "Call Connecting..");
 
         // Hangup previous call.
         hangupCall();
@@ -230,9 +232,21 @@ peerjs.on('call', function (call) {
         // Answer the call with an A/V stream.
         call.answer(stream);
 
+        // Save the call in our globals.
+        window.existingCall = call;
+
+        // Display calling peers ID.
+        $('#their-id').text(call.peer);
+
+        // Call loading callback.
+        onCallLoading();
+
         // Wait for stream on the call.
         call.on('stream', function (remoteStream) {
-            onCallConnected();
+            // Display Call In Progress
+            callConnectedUI(true, "In Call");
+
+            // onCallConnected();
             $('#their-video').prop('src', URL.createObjectURL(remoteStream)); // Display other partys video stream.
         });
 
@@ -240,39 +254,6 @@ peerjs.on('call', function (call) {
         call.on('close', function () {
             onCallEnded();
         });
-
-        // If there was an error with the call.
-        call.on('error', function (err) {
-
-            // Call failed callback.
-            onCallFailedRetry();
-
-            // Display error message.
-            console.log('Error connecting call, retry.');
-
-            // If the call is working, but not displaying anything close.
-            if (call.open) {
-                call.close();
-            }
-
-            // Leave the room again.
-            room = '';
-
-            // Setup the UI.
-            callConnectedUI(false, 'Call Failed.');
-            $('#their-id').text('Not in call.');
-
-            // Emit to start a new call.
-            socket.emit('new call');
-        });
-
-        // COMBAK: Remove/refractor this!
-        // UI stuff
-        window.existingCall = call;
-        $('#their-id').text(call.peer);
-
-        // Display Call In Progress
-        callConnectedUI(true, "In Call");
     }, function (err) {
         clientLoadVideoFailed(err);
         console.log('Failed to get local stream', err);
@@ -612,9 +593,9 @@ function onPartyDisconnected() {}
  * {Display call ended icon.}
  * @return void
  */
-function onCallEnded() {
-    $('#their-video').prop('src', ''); // Remove other partys video connection.
-}
+function onCallEnded() {}
+//
+
 
 /**
  * A user has successfully loaded/allowed access to
