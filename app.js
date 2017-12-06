@@ -11,7 +11,7 @@ const flash = require('connect-flash');
 const expressValidator = require('express-validator');
 const routes = require('./routes/index');
 const mustacheExpress = require('mustache-express');
-const httpsRedirect = require('express-https-redirect');
+// const httpsRedirect = require('express-https-redirect');
 
 // create our Express app
 const app = express();
@@ -39,7 +39,7 @@ app.use(expressValidator());
 app.use(cookieParser());
 
 // Redirect non-HTTPS traffic to secure
-app.use(httpsRedirect());
+// app.use(httpsRedirect());
 
 // After allllll that above middleware, we finally handle our own routes!
 app.use('/', routes);
