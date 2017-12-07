@@ -34,7 +34,6 @@
 <!-- Our client-side application -->
 <!-- TODO: require jQuery, Socket.io, and Peerjs from within this file -->
 <script type="text/javascript" src="dist/App.bundle.js"></script>
-<script type="text/javascript" src="main.js"></script>
 
 </head>
 
@@ -92,6 +91,7 @@
 									</div>
 								</div>
 								<video id="their-video" class="embed-responsive-item" autoplay></video>
+								<canvas id="confeti" width="300" height="300" class="active"></canvas>
 							</div>
 							<!-- My Video -->
 							<!-- 16:9 aspect ratio -->
@@ -119,7 +119,7 @@
 										<button type="button" class="btn btn-secondary" id="tool-thumbdown"><span class="lnr lnr-thumbs-down"></span></button>
 									</div>
 									<div class="col col-xs-auto">
-										<button type="button" class="btn btn-secondary" id="tool-heart"><span class="lnr lnr-heart"></span></button>
+										<button type="button" class="btn btn-secondary" id="tool-confetti"><span class="lnr lnr-magic-wand"></span></button>
 									</div>
 								</div>
 						  </div>
