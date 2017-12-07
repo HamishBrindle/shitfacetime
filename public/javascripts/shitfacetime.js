@@ -613,7 +613,6 @@ function onCallLoading() {
  */
 function onCallConnected() {
     $('.video-loader').hide();
-    confetti();
     $('#confeti').hide();
 }
 
