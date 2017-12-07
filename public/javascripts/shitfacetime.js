@@ -316,6 +316,9 @@ socket.on('chat message', function(data) {
 
         // Add chat message to chat area.
         $('#chat-area').append(html);
+
+        // Scroll to new message.
+        $('.chat').scrollTop($('.chat')[0].scrollHeight);
     }
 });
 
@@ -545,6 +548,7 @@ function onPartyDisconnected() {
  */
 function onCallEnded() {
     $('.video-loader').show();
+    $('.chat ul').html('');
 }
 
 /**

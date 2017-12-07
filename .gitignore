@@ -5,6 +5,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+.idea
+
+public/dist/App.bundle.js
+public/dist/App.bundle.js.map
+public/dist/style.css
+public/dist/style.css.map
+
 # Runtime data
 pids
 *.pid
