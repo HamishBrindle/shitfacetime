@@ -156,6 +156,13 @@ video {
   z-index: 500;
   position: relative; }
 
+.away-video canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0; }
+
 .away-video video {
   border-radius: 10px; }
 
@@ -265,7 +272,8 @@ video {
   padding: 1em;
   background-color: #F8DC25;
   border-radius: 40px;
-  max-height: 22.5rem; }
+  max-height: 22.5rem;
+  min-width: 75px; }
 
 .tools button {
   border-radius: 50%;
