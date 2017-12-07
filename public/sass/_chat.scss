@@ -111,8 +111,9 @@ video {
   width: 100%;
   margin: auto;
   background: #fff;
+  border: none;
   border-radius: 10px;
-  overflow-y: scroll;
+  overflow-y: hidden;
   overflow-x: hidden;
 }
 
@@ -178,15 +179,18 @@ video {
   width: 100%;
 }
 
-.chat-controls button {
-  width: 45%;
+#message-send {
+  width: 100%;
   margin: auto;
   border-radius: 10px;
   border: none;
   padding: 5px;
+  margin-top: 0.5em;
   background-color: $yellow;
   font-size: 12px;
   color: #444;
+  box-shadow: 1px 1px 0.5px 0.5px #555;
+  outline: none;
 }
 
 .message-content {
@@ -195,4 +199,48 @@ video {
 
 .message-content textarea {
   width: 100%;
+}
+
+// Input for new message
+#m {
+  margin-top: 0.5em;
+  border: none;
+  border-radius: 10px;
+  min-height: 20px;
+  width: 100%;
+  text-indent: 10px;
+  padding: 10px 10px;
+  line-height: 14px
+}
+
+:focus {
+  outline: none;
+}
+
+.banner-logo {
+  width: 100px;
+}
+
+.toolbar {
+  height: 100%;
+  margin: 1em;
+}
+
+.tools {
+  padding: 1em;
+  background-color: $yellow;
+  border-radius: 40px;
+  max-height: 22.5rem;
+}
+
+.tools button {
+  border-radius: 50%;
+  font-size: 26px;
+  margin-bottom: 10px;
+  background-color: $theme-pink;
+  border: none;
+}
+
+.tools button:hover {
+  background-color: $purple;
 }
