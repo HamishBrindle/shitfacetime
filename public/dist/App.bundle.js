@@ -102,16 +102,16 @@ var peerSettings = {
             url: "stun:global.stun.twilio.com:3478?transport=udp"
         }, {
             url: "turn:global.turn.twilio.com:3478?transport=udp",
-            username: "6126da033a7be666f10a3f1c0a4bf26f0111c0ac7e7ebd9e3503a181f9e51d8c",
-            credential: "bM0+RW4MfPkSJRkGMtdo26vI36/USjTt6zG4Eaitt8s="
+            username: "49e1aa5f04c9ef9e20fd3d152dc45fc9952407453a2b5f5b6d2a2c34fff2a6ee",
+            credential: "vhGp1LbBos0Qliz464N1Ui1bqxI0r/7ID/0F3K0ry3g="
         }, {
             url: "turn:global.turn.twilio.com:3478?transport=tcp",
-            username: "6126da033a7be666f10a3f1c0a4bf26f0111c0ac7e7ebd9e3503a181f9e51d8c",
-            credential: "bM0+RW4MfPkSJRkGMtdo26vI36/USjTt6zG4Eaitt8s="
+            username: "49e1aa5f04c9ef9e20fd3d152dc45fc9952407453a2b5f5b6d2a2c34fff2a6ee",
+            credential: "vhGp1LbBos0Qliz464N1Ui1bqxI0r/7ID/0F3K0ry3g="
         }, {
             url: "turn:global.turn.twilio.com:443?transport=tcp",
-            username: "6126da033a7be666f10a3f1c0a4bf26f0111c0ac7e7ebd9e3503a181f9e51d8c",
-            credential: "bM0+RW4MfPkSJRkGMtdo26vI36/USjTt6zG4Eaitt8s="
+            username: "49e1aa5f04c9ef9e20fd3d152dc45fc9952407453a2b5f5b6d2a2c34fff2a6ee",
+            credential: "vhGp1LbBos0Qliz464N1Ui1bqxI0r/7ID/0F3K0ry3g="
         }]
     }
 };
