@@ -188,4 +188,21 @@ io.on('connection', function(socket) {
             });
         }
     });
+
+    // Recieve a chat message to broadcast.
+    socket.on('tool selection', function(id) {
+
+        console.log('Tool button emit recieved by server.')
+
+        // Check if the user is in a room!
+        var room = String(rooms[socket.id]);
+        if (room != null) {
+            // Send message to the room with message.
+            socket.broadcast.to(room).emit('tool selection', {
+                'tool': id,
+                'sender': socket.id
+            });
+        }
+    });
+
 });

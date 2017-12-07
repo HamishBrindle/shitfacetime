@@ -39,16 +39,29 @@ var peerSettings = {　
     }
 };
 
+// Setup our Howler.js Object
+// for playing sounds
+var sound = new Howl({
+    src: ['sound/traphorn.mp3'],
+    sprite: {
+        blast: [0, 3000]
+    },
+    volume: 0.5,
+    onend: function() {
+        console.log('Finished playing sound.');
+    }
+});
+
 // Create PeerJS and Socket connections.
 const socket = io();
 const peerjs = new Peer(peerSettings);
 
 /**
-* PeerJS: On Connection.
-*
-* @param  socket - Clients Socket Object.
-* @return void
-*/
+ * PeerJS: On Connection.
+ *
+ * @param  socket - Clients Socket Object.
+ * @return void
+ */
 peerjs.on('open', function() {
     makePeerHeartbeater(peerjs); // Start heartbeat connection.
     consoleMessage('Peerjs Connected'); // Connected message.
@@ -64,7 +77,10 @@ peerjs.on('open', function() {
  */
 function startCall(peerid) {
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-    navigator.getUserMedia({video: true, audio: true}, function(stream) {
+    navigator.getUserMedia({
+        video: true,
+        audio: true
+    }, function(stream) {
 
         // Call loading callback.
         onCallLoading();
@@ -98,7 +114,7 @@ function startCall(peerid) {
         callConnectedUI(true, "In Call");
     }, function(err) {
         onClientLoadVideoFailed();
-        console.log('Failed to get local stream' ,err);
+        console.log('Failed to get local stream', err);
     });
 }
 
@@ -108,75 +124,78 @@ function startCall(peerid) {
  * @param call - Recieving call.
  * @return void
  */
- navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
- peerjs.on('call', function(call) {
-     navigator.getUserMedia({video: true, audio: true}, function(stream) {
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+peerjs.on('call', function(call) {
+    navigator.getUserMedia({
+        video: true,
+        audio: true
+    }, function(stream) {
 
-         // Call loading callback.
-         onCallLoading();
+        // Call loading callback.
+        onCallLoading();
 
-         // Display Call In Progress
-         callConnectedUI(true, "Loading Video..");
+        // Display Call In Progress
+        callConnectedUI(true, "Loading Video..");
 
-         // Hangup previous call.
-         hangupCall();
+        // Hangup previous call.
+        hangupCall();
 
-         // Answer the call with an A/V stream.
-         call.answer(stream);
+        // Answer the call with an A/V stream.
+        call.answer(stream);
 
-         // Wait for stream on the call.
-         call.on('stream', function(remoteStream) {
-             // Call connected callback.
-             onCallConnected();
+        // Wait for stream on the call.
+        call.on('stream', function(remoteStream) {
+            // Call connected callback.
+            onCallConnected();
 
-             // Set Peer Video Display
-             $('#their-video').prop('src', URL.createObjectURL(remoteStream));
-         });
+            // Set Peer Video Display
+            $('#their-video').prop('src', URL.createObjectURL(remoteStream));
+        });
 
-         // When call has stopped.
-         call.on('close', function() {
-             // Remove black box in empty call video.
-             $('#their-video').attr('src', '');
-         });
+        // When call has stopped.
+        call.on('close', function() {
+            // Remove black box in empty call video.
+            $('#their-video').attr('src', '');
+        });
 
-         // If there was an error with the call.
-         call.on('error', function(err) {
+        // If there was an error with the call.
+        call.on('error', function(err) {
 
-             // Display error message.
-             console.log('Error connecting call, retry.');
+            // Display error message.
+            console.log('Error connecting call, retry.');
 
-             // Call failed, retry callback.
-             onCallFailedRetry();
+            // Call failed, retry callback.
+            onCallFailedRetry();
 
-             // If the call is working, but not displaying anything close.
-             // TODO: Check if its displaying anything.
-             if (call.open) {
-                 call.close();
-             }
+            // If the call is working, but not displaying anything close.
+            // TODO: Check if its displaying anything.
+            if (call.open) {
+                call.close();
+            }
 
-             // Leave the room again.
-             room = '';
+            // Leave the room again.
+            room = '';
 
-             // Setup the UI.
-             callConnectedUI(false, 'Call Failed.');
-             $('#their-id').text('Not in call.');
+            // Setup the UI.
+            callConnectedUI(false, 'Call Failed.');
+            $('#their-id').text('Not in call.');
 
-             // Emit to start a new call.
-             socket.emit('new call');
-         });
+            // Emit to start a new call.
+            socket.emit('new call');
+        });
 
-         // UI stuff
-         window.existingCall = call;
-         $('#their-id').text(call.peer);
+        // UI stuff
+        window.existingCall = call;
+        $('#their-id').text(call.peer);
 
-         // Display Call In Progress
-         callConnectedUI(true, "In Call");
-     }, function(err) {
-         // Client video failed to load callback.
-         onClientLoadVideoFailed();
-         console.log('Failed to get local stream' ,err);
-     });
- });
+        // Display Call In Progress
+        callConnectedUI(true, "In Call");
+    }, function(err) {
+        // Client video failed to load callback.
+        onClientLoadVideoFailed();
+        console.log('Failed to get local stream', err);
+    });
+});
 
 /**
  * Emitted when the peer is disconnected from the signalling server.
@@ -237,7 +256,7 @@ peerjs.on('error', function(err) {
  * @param  socket - Clients Socket Object.
  * @return void
  */
-socket.on('connect', function (socket) {
+socket.on('connect', function(socket) {
     consoleMessage('Socket Connected'); // Connected message.
     socketConnectedUI(); // UI display for connected.
     socketConnected = true; // Connection has been made.
@@ -245,10 +264,10 @@ socket.on('connect', function (socket) {
 });
 
 /**
-* Socket.IO: Matched with a peer, and call has started.
-*
-* @return void
-*/
+ * Socket.IO: Matched with a peer, and call has started.
+ *
+ * @return void
+ */
 socket.on('call start', function(data) {
     // Save the room name.
     room = data.room;
@@ -258,8 +277,7 @@ socket.on('call start', function(data) {
     console.log("Peer ID: " + data.peer);
 
     // Ensure only one person starts the call.
-    if (data.caller == 'this')
-    {
+    if (data.caller == 'this') {
         // Find party callback.
         onFindingParty();
 
@@ -269,10 +287,10 @@ socket.on('call start', function(data) {
 });
 
 /**
-* Socket.IO: Emitted when a
-*
-* @return void
-*/
+ * Socket.IO: Emitted when a
+ *
+ * @return void
+ */
 socket.on('partner disconnected', function(data) {
     // Reset the room name.
     room = '';
@@ -289,10 +307,10 @@ socket.on('partner disconnected', function(data) {
 });
 
 /**
-* Socket.IO: When disconnect of the call has occurred.
-*
-* @return void
-*/
+ * Socket.IO: When disconnect of the call has occurred.
+ *
+ * @return void
+ */
 socket.on('disconnect', function() {
     // Client has disconnected callback.
     onClientDisconnected();
@@ -323,10 +341,34 @@ socket.on('chat message', function(data) {
 });
 
 /**
-* Socket.IO: Helper function to toggle the UI when socket.io is connected.
-*
-* @return void
-*/
+ * Executes toolbar function selected by user.
+ *
+ * @param tool
+ * @return void
+ */
+socket.on('tool selection', function(data) {
+
+    // Decide which tool was selected (data is id)
+    if (data.tool === 'tool-traphorn') {
+        console.log('Tool recieved: traphorn.');
+        sound.play('blast');
+    } else if (data.tool === 'tool-music') {
+        console.log('Tool recieved: music.');
+    } else if (data.tool === 'tool-thumbsup') {
+        console.log('Tool recieved: thumbs-up.');
+    } else if (data.tool === 'tool-thumbsdown') {
+        console.log('Tool recieved: thumbs-down.');
+    } else if (data.tool === 'tool-heart') {
+        console.log('Tool recieved: heart.');
+    }
+
+});
+
+/**
+ * Socket.IO: Helper function to toggle the UI when socket.io is connected.
+ *
+ * @return void
+ */
 function socketConnectedUI() {
     $('#socket-connected').addClass('badge-success').removeClass('badge-danger');
     $('#socket-connected').text('Connected');
@@ -334,11 +376,11 @@ function socketConnectedUI() {
 }
 
 /**
-* PeerJS: Helper function to toggle the UI when peerjs is connected.
-*
-* @uses PeerJS
-* @return void
-*/
+ * PeerJS: Helper function to toggle the UI when peerjs is connected.
+ *
+ * @uses PeerJS
+ * @return void
+ */
 function peerjsConnectedUI() {
     // UI: Peerjs connection status.
     $('#peerjs-connected').addClass('badge-success').removeClass('badge-danger');
@@ -347,10 +389,10 @@ function peerjsConnectedUI() {
 }
 
 /**
-* Helper function to display call connected/not connected.
-*
-* @return void
-*/
+ * Helper function to display call connected/not connected.
+ *
+ * @return void
+ */
 function callConnectedUI(status, message) {
     // Class names.
     var to = 'success';
@@ -368,19 +410,19 @@ function callConnectedUI(status, message) {
 }
 
 /**
-* Helper function to display console messages.
-*
-* @return void
-*/
+ * Helper function to display console messages.
+ *
+ * @return void
+ */
 function consoleMessage(message = '') {
     console.log(APP_NAME + ':\t' + message);
 }
 
 /**
-* Find a peer to call with.
-*
-* @return void
-*/
+ * Find a peer to call with.
+ *
+ * @return void
+ */
 function findPeer() {
 
     // Display message.
@@ -400,13 +442,16 @@ function findPeer() {
 }
 
 /**
-* Setup call information.
-*
-* @return void
-*/
+ * Setup call information.
+ *
+ * @return void
+ */
 function setupCall() {
     // Get audio/video stream
-    navigator.getUserMedia({ audio: true, video: true }, function(stream) {
+    navigator.getUserMedia({
+        audio: true,
+        video: true
+    }, function(stream) {
         // Set your local stream video to display.
         $('#my-video').prop('src', URL.createObjectURL(stream));
 
@@ -449,21 +494,26 @@ function hangupCall() {
 function makePeerHeartbeater(peer) {
     console.log('Heartbeat Started.');
     var timeoutId = 0;
-    function heartbeat () {
-        timeoutId = setTimeout( heartbeat, 20000 );
-        if ( peer.socket._wsOpen() ) {
-            peer.socket.send( {type:'HEARTBEAT'} );
+
+    function heartbeat() {
+        timeoutId = setTimeout(heartbeat, 20000);
+        if (peer.socket._wsOpen()) {
+            peer.socket.send({
+                type: 'HEARTBEAT'
+            });
         }
     }
     // Start
     heartbeat();
     // return
     return {
-        start : function () {
-            if ( timeoutId === 0 ) { heartbeat(); }
+        start: function() {
+            if (timeoutId === 0) {
+                heartbeat();
+            }
         },
-        stop : function () {
-            clearTimeout( timeoutId );
+        stop: function() {
+            clearTimeout(timeoutId);
             timeoutId = 0;
         }
     };
@@ -587,19 +637,30 @@ function onClientDisconnected() {
 // Click handlers setup
 $(function() {
 
-     // Sending messages
-     $('#message-send').click(function() {
-         sendChatMessage();
-         return false;
-     });
+    // Sending messages
+    $('#message-send').click(function() {
+        sendChatMessage();
+        return false;
+    });
 
-     // When user enters keypress.
-     $(document).keypress(function(e) {
-         if(e.which == 13) {
-             sendChatMessage();
-             return false;
-         }
-     });
+    // When user enters keypress.
+    $(document).keypress(function(e) {
+        if (e.which == 13) {
+            sendChatMessage();
+            return false;
+        }
+    });
+
+    // When user hits traphorn button
+    $('.tools button').click(function() {
+
+        // Get the ID of the tool selected
+        var id = $(this).attr('id');
+
+        // Send off tool selection to be emitted
+        sendToolSelection(id);
+
+    });
 
     // Retry if getUserMedia fails
     $('#step1-retry').click(function() {
@@ -609,6 +670,13 @@ $(function() {
     // Get things started
     setupCall();
 });
+
+function sendToolSelection(id) {
+
+    // Emits the selected button's ID to the server.
+    socket.emit('tool selection', id);
+
+}
 
 // Sends a chat message.
 function sendChatMessage() {
